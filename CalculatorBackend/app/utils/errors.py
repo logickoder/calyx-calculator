@@ -39,3 +39,12 @@ class NotFoundError(BaseError):
             errorType=errorType or errorTypes["NOT_FOUND_ERROR"],
             verboseMessage=verboseMessage
         )
+
+class InvalidCurrencyCode(BaseError):
+    def __init__(self, message:str, verboseMessage=None):
+        super().__init__(
+            message=message or "Invalid currency code provided.",
+            verboseMessage=verboseMessage,
+            httpCode=statusCodes["400"],
+            errorType=errorTypes["VALIDATION_FAILED"]
+        )
