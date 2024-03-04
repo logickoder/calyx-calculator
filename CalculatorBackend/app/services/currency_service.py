@@ -35,10 +35,11 @@ class CurrencyService:
             return {'rate': float(rate), 'timestamp': timestamp}
 
         try:
-            url = f"https://openexchangerates.org/api/convert/1/{from_currency}/{to_currency}?app_id={self.app_id}&prettyprint=false"
+            # url = f"https://openexchangerates.org/api/convert/1/{from_currency}/{to_currency}?app_id={self.app_id}&prettyprint=false"
+            # url = f"https://openexchangerates.org/api/convert/1/USD/EUR?app_id=e6a5621563904da19f5ff422f18e2b3e&app_id='e6a5621563904da19f5ff422f18e2b3e'&prettyprint=false"
+            url = f"https://openexchangerates.org/api/convert/1/{from_currency}/{to_currency}?app_id={self.app_id}&app_id='{self.app_id}'&prettyprint=false"
             headers = {"accept": "application/json"}
             response = requests.get(url, headers=headers)
-            response.raise_for_status() 
 
             print("response")
             print(response)
