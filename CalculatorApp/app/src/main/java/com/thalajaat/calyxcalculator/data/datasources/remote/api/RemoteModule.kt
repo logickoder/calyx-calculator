@@ -1,4 +1,4 @@
-package com.thalajaat.calyxcalculator.network.api
+package com.thalajaat.calyxcalculator.data.datasources.remote.api
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder

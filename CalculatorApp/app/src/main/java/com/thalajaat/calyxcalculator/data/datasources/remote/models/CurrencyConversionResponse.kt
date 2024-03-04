@@ -1,7 +1,8 @@
-package com.thalajaat.calyxcalculator.network.models
+package com.thalajaat.calyxcalculator.data.datasources.remote.models
 
 import com.google.gson.annotations.SerializedName
 
+// To change this when the API is live
 data class CurrencyConversionResponse(
     @SerializedName("from")
     var fromConverter: String = "USD",

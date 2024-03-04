@@ -1,6 +1,6 @@
-package com.thalajaat.calyxcalculator.network.api
+package com.thalajaat.calyxcalculator.data.datasources.remote.api
 
-import com.thalajaat.calyxcalculator.network.models.CurrencyConversionResponse
+import com.thalajaat.calyxcalculator.data.datasources.remote.models.CurrencyConversionResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

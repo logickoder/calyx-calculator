@@ -1,4 +1,4 @@
-package com.thalajaat.calyxcalculator.network.models
+package com.thalajaat.calyxcalculator.data.datasources.remote.models
 
 import com.google.gson.annotations.SerializedName
 
