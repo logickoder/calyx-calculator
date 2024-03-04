@@ -27,27 +27,25 @@ class CurrencyService:
         print(to_currency)
 
         cache_key = f"{from_currency}_{to_currency}"
-        # cached = self.redis_client.get_value(cache_key)
         cached = self.redis_client.get_value(cache_key).decode('utf-8') if self.redis_client.get_value(cache_key) else None
 
         if cached:
+            print(f"{from_currency}/{to_currency} is already cached")
+
             rate, timestamp = cached.split('|')
             return {'rate': float(rate), 'timestamp': timestamp}
 
         try:
-            # url = f"https://openexchangerates.org/api/convert/1/{from_currency}/{to_currency}?app_id={self.app_id}&prettyprint=false"
-            # url = f"https://openexchangerates.org/api/convert/1/USD/EUR?app_id=e6a5621563904da19f5ff422f18e2b3e&app_id='e6a5621563904da19f5ff422f18e2b3e'&prettyprint=false"
-            url = f"https://openexchangerates.org/api/convert/1/{from_currency}/{to_currency}?app_id={self.app_id}&app_id='{self.app_id}'&prettyprint=false"
+            url = f"https://openexchangerates.org/api/latest.json?app_id={self.app_id}&base={from_currency}&symbols={to_currency}&prettyprint=false&show_alternative=false"
             headers = {"accept": "application/json"}
             response = requests.get(url, headers=headers)
 
-            print("response")
-            print(response)
+            actual_res = response.json()
+            rate = actual_res["rates"][to_currency]
 
-            print("response text")
-            print(response.text)
-            
-            rate = response['meta']['rate']['etst']
+            print("JSON response")
+            print(response.json())
+
             if rate is None :
                 raise ValueError("Missing rate in the response")
             
