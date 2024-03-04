@@ -2,14 +2,7 @@ CalculatorBackend
 |
 |
 └───────app/
-|     |      
-|     │
-|     └──────errors/
-|     │   │
-|     │   └───────__init__.py
-|     │   │
-|     │   └───────redis_client.py
-|     |         
+|     |            
 |     │
 |     └──────cache/
 |     │   │
@@ -28,6 +21,10 @@ CalculatorBackend
 |     └─────utils/
 |     │   │
 |     │   └───────__init__.py
+|     │   │
+|     │   └───────constants.py
+|     │   │
+|     │   └───────errors.py
 |     │   │
 |     │   └───────rate_limiting.py # Implements rate limiting for the API endpoints
 |     |
