@@ -1,1 +1,1 @@
-print("dummy text")
+from .redis_client import RedisClient

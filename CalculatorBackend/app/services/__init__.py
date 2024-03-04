@@ -1,1 +1,1 @@
-print("dummy text")
+from .currency_service import CurrencyService
