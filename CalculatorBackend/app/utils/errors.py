@@ -1,5 +1,5 @@
 import logging 
-from utils.constants import *
+from .constants import *
 logging.basicConfig(level=logging.ERROR)
 
 

@@ -2,7 +2,7 @@ import os
 import requests
 import datetime
 from dotenv import load_dotenv
-from utils.errors import NotFoundError
+from app.utils.errors import NotFoundError
 
 load_dotenv()
 
