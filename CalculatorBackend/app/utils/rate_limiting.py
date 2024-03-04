@@ -3,7 +3,7 @@ from time import time
 class RateLimiter:
     def __init__(self):
         self.requests = {}
-        self.limit = 100  # 60 requests per hour
+        self.limit = 60  # 60 requests per hour
         self.reset_time = 3600  # 1 hour in seconds
 
     def is_rate_limited(self, ip):
