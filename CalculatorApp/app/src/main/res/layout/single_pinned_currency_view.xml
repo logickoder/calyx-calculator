@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_first_conversion"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:background="@color/equal_to"
+        app:cornerRadius="50dp"
+        android:text="GBP/EUR"
+        android:fontFamily="@font/montserrat"
+        android:textColor="#ffff"
+        android:textSize="12sp"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="3dp"/>
+
+</LinearLayout>
