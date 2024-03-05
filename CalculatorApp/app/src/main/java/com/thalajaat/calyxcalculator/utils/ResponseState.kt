@@ -1,7 +1,5 @@
 package com.thalajaat.calyxcalculator.utils
 
-import com.thalajaat.calyxcalculator.data.datasources.remote.models.CurrencyConversionResponse
-import com.thalajaat.calyxcalculator.data.datasources.remote.models.ErrorResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart

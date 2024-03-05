@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "ConversionTable")
 data class ConversionEntity(
     @PrimaryKey
-    var id: String? = null,
+    var id: String,
     val rate:String,
     val timestap:String
 )
