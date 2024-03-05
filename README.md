@@ -165,9 +165,16 @@ Before you begin, make sure you have Python installed on your system. This proje
 
    Before running the application, you need to set the necessary environment variables. Rename the `.env.example` file to `.env` and update it with your actual configuration values:
 
-   ```bash
-   cp .env.example .env
-   ```
+   - **On Windows:**
+
+     ```cmd
+     copy .env.example .env
+     ```
+
+   - **On macOS and Linux:**
+      ```bash
+      cp .env.example .env
+      ```
 
    Then, open the `.env` file in your favorite text editor and set the values for the environment variables defined within.
 
