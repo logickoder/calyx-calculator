@@ -14,7 +14,7 @@ android {
     defaultConfig {
         applicationId = "com.thalajaat.calyxcalculator"
         minSdk = 16
-        targetSdk = 34
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 

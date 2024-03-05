@@ -1,0 +1,10 @@
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:initialLayout="@layout/calculator_widget"
+    android:minHeight="110dp"
+    android:minWidth="320dp"
+    android:updatePeriodMillis="1800000"
+    android:resizeMode="none"
+    android:previewImage="@mipmap/ic_launcher"
+    android:widgetCategory="home_screen"
+    >
+</appwidget-provider>
