@@ -37,6 +37,9 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
+    buildFeatures {
+        viewBinding =  true
+    }
 }
 
 dependencies {
@@ -90,5 +93,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.retrofit2.kotlin.coroutines.adapter)
     implementation(libs.timber)
+
+    implementation("org.mariuszgromada.math:MathParser.org-mXparser:4.4.2")
 
 }
