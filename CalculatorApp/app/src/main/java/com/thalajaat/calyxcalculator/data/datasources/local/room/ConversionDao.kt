@@ -21,7 +21,6 @@ interface ConversionDao {
     @Query("SELECT * FROM conversiontable WHERE id = :rateId")
     fun getConversionRate(rateId:String): Flow<List<ConversionEntity>>
 
-
     @Query("DELETE FROM conversiontable")
     suspend fun deleteAll()
 
