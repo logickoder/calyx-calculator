@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="bottom"
-    android:background="@color/background"
     android:gravity="bottom"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/output"
+        android:id="@+id/m_output"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
@@ -21,7 +20,6 @@
         android:layout_marginBottom="5dp"
         android:fontFamily="@font/montserrat"
         android:textAlignment="textEnd"
-        android:textColor="?attr/colorOnPrimary"
         android:textSize="14sp" />
 
     <TextView
@@ -36,7 +34,6 @@
         android:fontFamily="@font/montserrat"
         android:text="@string/_0"
         android:textAlignment="textEnd"
-        android:textColor="?attr/colorOnPrimary"
         android:textSize="48sp" />
 
     <LinearLayout
@@ -49,7 +46,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_margin="3dp"
             android:layout_weight="1"
@@ -63,15 +60,12 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|center"
-            android:layout_margin="3dp"
             android:layout_weight="1"
-            android:background="@drawable/circle_button"
+            android:layout_gravity="end|center"
             android:fontFamily="@font/montserrat"
             android:src="@drawable/ic_more"
             android:contentDescription="@string/more_options"
-            android:textColor="#ffff"
-            android:textSize="20sp" />
+            app:tint="?android:attr/textColor" />
 
     </LinearLayout>
 
@@ -85,80 +79,59 @@
         android:orientation="horizontal">
 
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button7"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_margin="3dp"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:fontFamily="@font/montserrat"
+            android:text="@string/_7"
+            android:textSize="28sp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button7"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:background="@drawable/circle_button"
-                android:fontFamily="@font/montserrat"
-                android:text="@string/_7"
-                android:textColor="?attr/colorOnPrimary"
-                android:textSize="28sp" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button8"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/_8"
+            android:textSize="28sp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button8"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:background="@drawable/circle_button"
-                android:fontFamily="@font/montserrat"
-                android:text="@string/_8"
-                android:textColor="?attr/colorOnPrimary"
-                android:textSize="28sp" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button9"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/_9"
+            android:textSize="28sp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button9"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:background="@drawable/circle_button"
-                android:fontFamily="@font/montserrat"
-                android:text="@string/_9"
-                android:textColor="?attr/colorOnPrimary"
-                android:textSize="28sp" />
+        <ImageButton
+            android:id="@+id/button_division"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat"
+            android:src="@drawable/ic_divide"
+            android:contentDescription="@string/divide"
+            app:tint="?android:attr/textColor" />
 
-            <ImageButton
-                android:id="@+id/button_division"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:background="@drawable/circle_button"
-                android:fontFamily="@font/montserrat"
-                android:src="@drawable/ic_divide"
-                android:contentDescription="@string/divide"
-                android:textColor="?attr/colorOnPrimary"
-                android:textSize="28sp" />
-
-            <ImageButton
-                android:id="@+id/button_delete"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:background="@drawable/circle_button"
-                android:fontFamily="@font/montserrat"
-                android:src="@drawable/ic_delete"
-                android:contentDescription="@string/delete"
-                android:textColor="?attr/colorOnPrimary"
-                android:textSize="28sp" />
-
-        </LinearLayout>
+        <ImageButton
+            android:id="@+id/button_delete"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat"
+            android:src="@drawable/ic_delete"
+            android:contentDescription="@string/delete"
+            app:tint="?android:attr/textColor"/>
 
     </LinearLayout>
 
@@ -171,82 +144,58 @@
         android:layout_marginEnd="8dp"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_margin="3dp"
             android:layout_weight="1"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:orientation="horizontal">
+            android:fontFamily="@font/montserrat"
+            android:text="@string/_4"
+            android:textSize="28sp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button4"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:background="@drawable/circle_button"
-                android:fontFamily="@font/montserrat"
-                android:text="@string/_4"
-                android:textColor="?attr/colorOnPrimary"
-                android:textSize="28sp" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button5"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/_5"
+            android:textSize="28sp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button5"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:background="@drawable/circle_button"
-                android:fontFamily="@font/montserrat"
-                android:text="@string/_5"
-                android:textColor="?attr/colorOnPrimary"
-                android:textSize="28sp" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button6"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/_6"
+            android:textSize="28sp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button6"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:background="@drawable/circle_button"
-                android:fontFamily="@font/montserrat"
-                android:text="@string/_6"
-                android:textColor="?attr/colorOnPrimary"
-                android:textSize="28sp" />
+        <ImageButton
+            android:id="@+id/button_multiplication"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat"
+            android:src="@drawable/ic_multiplication"
+            android:contentDescription="@string/multiply"
+            app:tint="?android:attr/textColor" />
 
-            <ImageButton
-                android:id="@+id/button_multiplication"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:background="@drawable/circle_button"
-                android:fontFamily="@font/montserrat"
-                android:src="@drawable/ic_multiplication"
-                android:contentDescription="@string/multiply"
-                android:textSize="28sp"
-                app:tint="?attr/colorOnPrimary"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_percentage"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/_percentage"
+            android:textSize="28sp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_percentage"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:background="@drawable/circle_button"
-                android:fontFamily="@font/montserrat"
-                android:text="@string/_percentage"
-                android:textColor="#ffff"
-                android:textSize="28sp" />
-
-
-        </LinearLayout>
 
     </LinearLayout>
 
@@ -273,41 +222,32 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button1"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="80dp"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
-                    android:background="@drawable/circle_button"
                     android:fontFamily="@font/montserrat"
                     android:text="@string/_1"
-                    android:textColor="?attr/colorOnPrimary"
                     android:textSize="28sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button2"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="80dp"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
-                    android:background="@drawable/circle_button"
                     android:fontFamily="@font/montserrat"
                     android:text="@string/_2"
-                    android:textColor="?attr/colorOnPrimary"
                     android:textSize="28sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button3"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="80dp"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
-                    android:background="@drawable/circle_button"
                     android:fontFamily="@font/montserrat"
                     android:text="@string/_3"
-                    android:textColor="?attr/colorOnPrimary"
                     android:textSize="28sp" />
 
                 <ImageButton
@@ -317,12 +257,10 @@
                     android:layout_height="80dp"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
-                    android:background="@drawable/circle_button"
                     android:fontFamily="@font/montserrat"
                     android:src="@drawable/ic_subtraction"
-                    android:contentDescription="@string/multiplication"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:textSize="28sp" />
+                    android:contentDescription="@string/minus"
+                    app:tint="?android:attr/textColor"/>
 
             </LinearLayout>
 
@@ -334,15 +272,12 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button0"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
-                    android:background="@drawable/circle_button"
                     android:fontFamily="@font/montserrat"
                     android:text="@string/_0"
-                    android:textColor="?attr/colorOnPrimary"
                     android:textSize="28sp" />
 
                 <LinearLayout
@@ -353,15 +288,12 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/button_period"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="wrap_content"
                         android:layout_height="80dp"
                         android:layout_margin="3dp"
                         android:layout_weight="1"
-                        android:background="@drawable/circle_button"
                         android:fontFamily="@font/montserrat"
                         android:text="@string/period"
-                        android:textColor="?attr/colorOnPrimary"
                         android:textSize="20sp" />
 
                     <ImageButton
@@ -371,11 +303,10 @@
                         android:layout_height="80dp"
                         android:layout_margin="3dp"
                         android:layout_weight="1"
-                        android:background="@drawable/circle_button"
                         android:fontFamily="@font/montserrat"
                         android:src="@drawable/ic_add"
                         android:contentDescription="@string/add"
-                        app:tint="?attr/colorOnPrimary" />
+                        app:tint="?android:attr/textColor"/>
 
                 </LinearLayout>
 
@@ -393,7 +324,7 @@
             android:fontFamily="@font/montserrat"
             android:src="@drawable/ic_equal_to"
             android:contentDescription="@string/equal_to"
-            app:tint="?attr/colorOnPrimary" />
+            app:tint="?android:attr/textColor" />
 
     </LinearLayout>
 

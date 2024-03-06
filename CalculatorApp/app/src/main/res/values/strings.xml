@@ -20,4 +20,9 @@
     <string name="divide">Divide</string>
     <string name="delete">Delete</string>
     <string name="multiply">multiply</string>
+    <string name="minus">minus</string>
+    <string name="calculator">Calculator</string>
+    <string name="search">Search</string>
+    <string name="pin">pin</string>
+    <string name="pinned">Pinned</string>
 </resources>
