@@ -2,7 +2,26 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="background">#3D3D3D</color>
+    <color name="background">#3D3D3D</color>j
     <color name="button_color">#3D3D3D</color>
     <color name="equal_to">#444444</color>
+    <color name="output">#5A5A5A</color>
+    <color name="pinned_currency_background">#805A5A5A</color>
+    <color name="grey">#D9D9D9</color>
+    <color name="disabled_grey">#80D9D9D9</color>
+    <color name="stroke">#9E9E9E </color>
+
+    <color name="secondary">#9E9E9E</color>
+
+    <color name="colorBackgroundLight">#FFFFFF</color>
+    <color name="textColorLight">#0A0A0A</color>
+    <color name="colorSurfaceLight">#DADADA</color>
+    <color name="colorSurfaceVariantLight">#F5F5F5</color>
+    <color name="colorAccentLight">#F5F5F5</color>
+
+    <color name="colorBackgroundDark">#3D3D3D</color>
+    <color name="textColorDark">#FFFFFF</color>
+    <color name="colorSurfaceDark">#4D4D4D</color>
+    <color name="colorSurfaceVariantDark">#444444</color>
+    <color name="colorAccentDark">#4C4C4C</color>
 </resources>
