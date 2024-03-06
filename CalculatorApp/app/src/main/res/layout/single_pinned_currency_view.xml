@@ -5,9 +5,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Button
-        android:id="@+id/button_first_conversion"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
+        android:id="@+id/name"
         android:backgroundTint="?android:attr/colorAccent"
         app:cornerRadius="50dp"
         android:text="@string/pinned_currency_sample"

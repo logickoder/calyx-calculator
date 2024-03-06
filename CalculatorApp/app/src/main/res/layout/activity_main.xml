@@ -17,6 +17,7 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="12dp"
+        android:text=""
         android:layout_marginBottom="5dp"
         android:fontFamily="@font/montserrat"
         android:textAlignment="textEnd"
@@ -47,6 +48,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:id="@+id/pinnedcoinslist"
             android:layout_gravity="center_vertical"
             android:layout_margin="3dp"
             android:layout_weight="1"

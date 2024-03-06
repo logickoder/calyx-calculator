@@ -9,6 +9,7 @@
         <item name="colorOnPrimary">?android:attr/textColor</item>
         <item name="colorSecondary">@color/secondary</item>
         <item name="colorSurface">@color/colorSurfaceLight</item>
+        <item name="colorOnSecondaryContainer">@color/stroke</item>
         <item name="colorSecondaryVariant">@color/colorSurfaceVariantLight</item>
         <item name="android:colorAccent">@color/colorAccentLight</item>
     </style>

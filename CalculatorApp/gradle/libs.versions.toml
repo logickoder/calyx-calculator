@@ -16,11 +16,13 @@ legacy-support-v4 = "1.0.0"
 loggingInterceptor = "4.10.0"
 material = "1.11.0"
 constraintlayout = "2.1.4"
+mathparserorgmxparser = "4.4.2"
 retrofit2KotlinCoroutinesAdapter = "0.9.2"
 mockwebserver = "4.10.0"
 retrofit = "2.9.0"
 okhttp = "4.11.0"
 room-runtime = "2.5.1"
+searchablespinner = "1.0.0"
 versionLifecycle = "2.6.1"
 roomKtx = "2.5.1"
 timber = "5.0.1"
@@ -56,6 +58,8 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "loggingInterceptor" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+searchablespinner = { module = "com.github.chetan532:SearchableSpinner", version.ref = "searchablespinner" }
+mathparserorgmxparser = { module = "org.mariuszgromada.math:MathParser.org-mXparser", version.ref = "mathparserorgmxparser" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 retrofit2-kotlin-coroutines-adapter = { module = "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter", version.ref = "retrofit2KotlinCoroutinesAdapter" }
 okhttp3-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "squareup-mockwebserver" }

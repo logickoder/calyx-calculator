@@ -63,7 +63,7 @@
                 android:id="@+id/button_first_conversion"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:background="@drawable/pinned_widget_background"
                 app:cornerRadius="50dp"
                 android:text="@string/pinned_currency_sample"
