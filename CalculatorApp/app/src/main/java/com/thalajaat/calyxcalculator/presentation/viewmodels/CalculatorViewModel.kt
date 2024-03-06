@@ -37,19 +37,7 @@ class CalculatorViewModel(
 
     private val api = ApiHelper()
 
-    init {
-        getData()
-    }
 
-    // Please Remove, Just for testing purpose, i didn't have time to set up timber
-    private fun getData() {
-        viewModelScope.launch {
-            api.getCurrencyConversionRate("USD", "EUR").collectLatest {
-                println(it.data)
-                Log.d("CalculatorViewModel", "getData: ${it.data}")
-            }
-        }
-    }
 
     fun addItems() = viewModelScope.launch {
         offlineRepository.insetDropDOwnRates2(Coins.entities)
