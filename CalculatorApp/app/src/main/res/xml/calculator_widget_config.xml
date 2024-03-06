@@ -1,9 +1,9 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:initialLayout="@layout/calculator_widget"
-    android:minHeight="220dp"
-    android:minWidth="320dp"
-    android:updatePeriodMillis="1800000"
-    android:resizeMode="none"
+    android:minHeight="320dp"
+    android:minWidth="350dp"
+    android:updatePeriodMillis="3000"
+    android:resizeMode="vertical"
     android:previewImage="@drawable/calyxos_calculator_widget_preview"
     android:widgetCategory="home_screen"
     >

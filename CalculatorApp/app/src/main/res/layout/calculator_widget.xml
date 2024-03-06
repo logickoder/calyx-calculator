@@ -66,6 +66,7 @@
                 android:background="@drawable/pinned_widget_background"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:visibility="gone"
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="3dp">
 
@@ -73,6 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:elevation="0dp"
+                    android:id="@+id/first_rate"
                     android:fontFamily="@font/montserrat_bold"
                     android:includeFontPadding="false"
                     android:padding="10dp"
@@ -92,12 +94,14 @@
                 android:background="@drawable/pinned_widget_background"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:visibility="gone"
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="3dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/second_rate"
                     android:visibility="visible"
                     app:cornerRadius="50dp"
                     android:text="@string/pinned_currency_sample"
@@ -117,6 +121,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/pinned_widget_background"
                 android:layout_gravity="center"
+                android:visibility="gone"
                 android:gravity="center"
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="3dp">
@@ -126,6 +131,7 @@
                     android:layout_height="wrap_content"
                     android:visibility="visible"
                     app:cornerRadius="50dp"
+                    android:id="@+id/third_rate"
                     android:text="@string/pinned_currency_sample"
                     android:elevation="0dp"
                     android:fontFamily="@font/montserrat_bold"
@@ -144,6 +150,7 @@
                 android:background="@drawable/pinned_widget_background"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:visibility="gone"
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="3dp">
 
@@ -152,6 +159,7 @@
                     android:layout_height="wrap_content"
                     android:visibility="visible"
                     app:cornerRadius="50dp"
+                    android:id="@+id/fourth_rate"
                     android:text="@string/pinned_currency_sample"
                     android:elevation="0dp"
                     android:fontFamily="@font/montserrat_bold"
@@ -287,7 +295,7 @@
                 android:fontFamily="@font/montserrat"
                 android:src="@drawable/ic_divide"
                 android:contentDescription="@string/divide"
-                android:tint="?android:attr/textColor" />
+                app:tint="?android:attr/textColor" />
 
             <ImageButton
                 android:id="@+id/button_delete"
@@ -299,8 +307,7 @@
                 android:fontFamily="@font/montserrat"
                 android:src="@drawable/ic_delete"
                 android:contentDescription="@string/delete"
-                android:tint="?attr/colorOnPrimary"
-                 />
+                app:tint="?attr/colorOnPrimary" />
 
         </LinearLayout>
 
@@ -519,7 +526,7 @@
             android:fontFamily="@font/montserrat"
             android:src="@drawable/ic_equal_to"
             android:contentDescription="@string/equal_to"
-            android:tint="?android:attr/textColor" />
+            app:tint="?android:attr/textColor" />
 
     </LinearLayout>
 

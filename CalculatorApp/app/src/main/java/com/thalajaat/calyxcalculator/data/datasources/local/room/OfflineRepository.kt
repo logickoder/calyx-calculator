@@ -1,6 +1,5 @@
 package com.thalajaat.calyxcalculator.data.datasources.local.room
 
-import androidx.lifecycle.LiveData
 import com.thalajaat.calyxcalculator.data.datasources.local.Coins
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +45,7 @@ class ConversionDbRepo(private val conversionDao: ConversionDao):ConversionDbRep
      return conversionDao.getDropDownRates()
     }
 
-    override fun getDropDownRate2(): LiveData<List<DropDownRateEntity>> {
+    override fun getDropDownRate2(): List<DropDownRateEntity> {
         return conversionDao.getDropDownRates2()
     }
 
@@ -67,6 +66,6 @@ interface ConversionDbRepoInterface{
     suspend fun insetDropDOwnRates2(conversionEntity: List<DropDownRateEntity>)
     suspend fun deleteDropDownRate(conversionEntity: DropDownRateEntity)
     fun getDropDownRate() : Flow<List<DropDownRateEntity>>
-    fun getDropDownRate2() : LiveData<List<DropDownRateEntity>>
+    fun getDropDownRate2() : List<DropDownRateEntity>
     suspend fun deleteAllDropDown()
 }
