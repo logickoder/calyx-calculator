@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.CalyxCalculator" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
@@ -13,5 +13,19 @@
         <item name="android:colorAccent">@color/colorAccentLight</item>
     </style>
 
+    <style name="Base.Theme.CalyxCalculatorWidget"
+        parent="@android:style/Theme.DeviceDefault.DayNight">
+        <item name="android:colorBackground">@color/colorBackgroundLight</item>
+        <item name="android:textColor">@color/textColorLight</item>
+        <item name="colorPrimary">?android:attr/colorBackground</item>
+        <item name="colorOnPrimary">?android:attr/textColor</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorSurface">@color/colorSurfaceLight</item>
+        <item name="colorSecondaryVariant">@color/colorSurfaceVariantLight</item>
+        <item name="android:colorAccent">@color/colorAccentLight</item>
+    </style>
+
     <style name="Theme.CalyxCalculator" parent="Base.Theme.CalyxCalculator" />
+    <style name="Theme.CalyxCalculatorWidget" parent="Base.Theme.CalyxCalculatorWidget" />
+
 </resources>

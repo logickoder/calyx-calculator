@@ -4,7 +4,7 @@
     android:minWidth="320dp"
     android:updatePeriodMillis="1800000"
     android:resizeMode="none"
-    android:previewImage="@mipmap/ic_launcher"
+    android:previewImage="@drawable/calyxos_calculator_widget_preview"
     android:widgetCategory="home_screen"
     >
 </appwidget-provider>
