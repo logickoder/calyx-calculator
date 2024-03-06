@@ -2,6 +2,7 @@ package com.thalajaat.calyxcalculator.data.datasources.local.room
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.Gson
 
 @Entity(tableName = "DropDownRatesTable")
 data class DropDownRateEntity(
@@ -13,4 +14,8 @@ data class DropDownRateEntity(
     val timestamp:String,
     val end:String,
     val isPinned:Boolean = false,
-)
+) {
+    fun toJson(): String {
+return Gson().toJson(this)
+    }
+}

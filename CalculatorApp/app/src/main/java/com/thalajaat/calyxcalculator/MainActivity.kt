@@ -1,5 +1,7 @@
 package com.thalajaat.calyxcalculator
 
+import android.appwidget.AppWidgetManager
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -17,8 +19,10 @@ import com.thalajaat.calyxcalculator.data.datasources.local.room.ConversionDbRep
 import com.thalajaat.calyxcalculator.databinding.ActivityMainBinding
 import com.thalajaat.calyxcalculator.databinding.PopupLayoutBinding
 import com.thalajaat.calyxcalculator.dormain.Arithemetics
+import com.thalajaat.calyxcalculator.dormain.CalculationHandler
 import com.thalajaat.calyxcalculator.presentation.uis.adapter.PinnedConiRecyclerViewAdapter
 import com.thalajaat.calyxcalculator.presentation.uis.adapter.RatesAdapter
+import com.thalajaat.calyxcalculator.presentation.uis.widgets.xml.ExampleAppWidgetProvider
 import com.thalajaat.calyxcalculator.presentation.viewmodels.CalculatorViewModel
 import com.thalajaat.calyxcalculator.presentation.viewmodels.CalculorViewModelFactory
 import kotlinx.coroutines.Job
@@ -34,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         val repository = ConversionDbRepo(
             ConversionDatabase.getDatabase(this).converstionDao()
         ) // Create a repository instance
-        val factory = CalculorViewModelFactory(repository)
+        val factory = CalculorViewModelFactory(repository, CalculationHandler())
         factory
     }
 
@@ -51,15 +55,20 @@ class MainActivity : AppCompatActivity() {
             if (it.isPinned) {
                 calculatorViewModel.unpin(it)
             } else {
-                calculatorViewModel.pin(it)
+                if(calculatorViewModel.rateState.value.filter { it.isPinned } .size<4) {
+                    calculatorViewModel.pin(it)
+                }
+                else{
+                    Toast.makeText(this, "You can’t pin more than 4 times, kindly unpin another to pin another selected currency.", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
     val pinnedadapter by lazy {
         PinnedConiRecyclerViewAdapter(this) {
 
-            calculatorViewModel.convertCurrency(it){
-                Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
+            calculatorViewModel.convertCurrency(it) {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -72,6 +81,27 @@ class MainActivity : AppCompatActivity() {
 
         init()
     }
+
+
+    override fun onPause() {
+        val intent = Intent(this, ExampleAppWidgetProvider::class.java)
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE)
+// Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+// since it seems the onUpdate() is only fired on that:
+        // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+// since it seems the onUpdate() is only fired on that:
+        val ids: IntArray = AppWidgetManager.getInstance(application)
+            .getAppWidgetIds(
+                android.content.ComponentName(
+                    application,
+                    ExampleAppWidgetProvider::class.java
+                )
+            )
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+        sendBroadcast(intent)
+        super.onPause()
+    }
+
 
     var job: Job? = null
 
@@ -103,7 +133,7 @@ class MainActivity : AppCompatActivity() {
             buttonMultiplication.setAritheieticListener(Arithemetics.MULTIPLY)
             buttonPeriod.setClickListeners(".")
             mOutput.setOnClickListener {
-                if(mOutput.text.isNotEmpty()){
+                if (mOutput.text.isNotEmpty()) {
                     calculationHandler.addValue(mOutput.text.toString())
                 }
             }

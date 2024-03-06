@@ -32,6 +32,8 @@ interface ConversionDao {
 
     @Query("SELECT * FROM dropdownratestable ORDER BY `index` ASC")
     fun getDropDownRates(): Flow<List<DropDownRateEntity>>
+    @Query("SELECT * FROM dropdownratestable ORDER BY `index` ASC")
+    fun getDropDownRates2(): List<DropDownRateEntity>
 
     @Query("SELECT * FROM conversiontable WHERE id = :rateId")
     fun getConversionRate(rateId:String): ConversionEntity?
