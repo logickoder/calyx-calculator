@@ -24,7 +24,7 @@ class CalculatorViewModel():ViewModel() {
     // Please Remove, Just for testing purpose, i didn't have time to set up timber
     private fun getData(){
         viewModelScope.launch {
-            api.getCurrencyConversionRate("USD", "EUR").collectLatest {
+            api.getCurrencyConversionRate("USD", "NGN").collectLatest {
                 println(it.data)
                 Log.d("CalculatorViewModel", "getData: ${it.data}")
             }
