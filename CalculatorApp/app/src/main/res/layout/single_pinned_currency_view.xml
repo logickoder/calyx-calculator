@@ -4,16 +4,14 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_first_conversion"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+    <Button
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:background="@color/equal_to"
+        android:layout_height="40dp"
+        android:id="@+id/name"
+        android:backgroundTint="?android:attr/colorAccent"
         app:cornerRadius="50dp"
-        android:text="GBP/EUR"
-        android:fontFamily="@font/montserrat"
-        android:textColor="#ffff"
+        android:text="@string/pinned_currency_sample"
+        android:fontFamily="@font/montserrat_bold"
         android:textSize="12sp"
         android:layout_marginStart="3dp"
         android:layout_marginEnd="3dp"/>

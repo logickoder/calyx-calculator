@@ -7,8 +7,10 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [
-        ConversionEntity::class],
-    version = 1,
+        ConversionEntity::class,
+        DropDownRateEntity::class,
+               ],
+    version = 3,
     exportSchema = false,
 )
 abstract class ConversionDatabase : RoomDatabase() {

@@ -9,8 +9,17 @@ import java.text.DecimalFormat
 class CalculationHandler():CalculationHandlerInterface {
 
     private var expression = MutableStateFlow( "0")
+    private var answer = MutableStateFlow( "")
 
     override fun getExpression():MutableStateFlow<String> = expression
+    override fun getAnswer(): MutableStateFlow<String> = answer
+    override fun setAnswer(d: Double,suffix:String) {
+
+            val result = DecimalFormat("0.######").format(d).toString()
+
+            answer.value = result+suffix
+            // Show Result
+    }
 
     override fun addValue(value: String){
         expression.value += value
@@ -60,10 +69,10 @@ class CalculationHandler():CalculationHandlerInterface {
             if (result.isNaN()) {
                 onError()
             } else {
-                val result = DecimalFormat("0.######").format(result).toString()
-                expression.value = result
+                expression.value = "0"
+                answer.value = DecimalFormat("0.######").format(result).toString()
                 // Show Result
-                onCalculationResponse(result)
+                onCalculationResponse(answer.value)
             }
         }
         catch (e:Exception){
@@ -86,6 +95,8 @@ interface CalculationHandlerInterface {
     fun calculate(onError:()->Unit,onCalculationResponse:(String)->Unit)
 
     fun getExpression():MutableStateFlow<String>
+    fun getAnswer():MutableStateFlow<String>
+    fun setAnswer(d: Double,suffix:String)
 }
 
 

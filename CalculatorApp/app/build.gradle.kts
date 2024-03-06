@@ -14,7 +14,7 @@ android {
     defaultConfig {
         applicationId = "com.thalajaat.calyxcalculator"
         minSdk = 16
-        targetSdk = 34
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -64,12 +64,11 @@ dependencies {
     // Added
     implementation(libs.androidx.recyclerview)
 
-    val navVersion = "2.6.0"
+
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.navigation.dynamic.features.fragment)
 
-    val versionLifecycle = "2.6.1"
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.savedstate)
@@ -94,6 +93,7 @@ dependencies {
     implementation(libs.retrofit2.kotlin.coroutines.adapter)
     implementation(libs.timber)
 
-    implementation("org.mariuszgromada.math:MathParser.org-mXparser:4.4.2")
+    implementation(libs.mathparserorgmxparser)
+
 
 }
