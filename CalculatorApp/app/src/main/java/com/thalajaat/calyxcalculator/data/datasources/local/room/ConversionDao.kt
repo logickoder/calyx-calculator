@@ -1,5 +1,6 @@
 package com.thalajaat.calyxcalculator.data.datasources.local.room
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -32,6 +33,8 @@ interface ConversionDao {
 
     @Query("SELECT * FROM dropdownratestable ORDER BY `index` ASC")
     fun getDropDownRates(): Flow<List<DropDownRateEntity>>
+    @Query("SELECT * FROM dropdownratestable ORDER BY `index` ASC")
+    fun getDropDownRates2(): LiveData<List<DropDownRateEntity>>
 
     @Query("SELECT * FROM conversiontable WHERE id = :rateId")
     fun getConversionRate(rateId:String): ConversionEntity?
