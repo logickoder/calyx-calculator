@@ -1,6 +1,5 @@
 package com.thalajaat.calyxcalculator.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -8,7 +7,6 @@ import com.thalajaat.calyxcalculator.data.datasources.local.Coins
 import com.thalajaat.calyxcalculator.data.datasources.local.room.ConversionDbRepoInterface
 import com.thalajaat.calyxcalculator.data.datasources.local.room.DropDownRateEntity
 import com.thalajaat.calyxcalculator.data.datasources.remote.api.ApiHelper
-import com.thalajaat.calyxcalculator.dormain.CalculationHandler
 import com.thalajaat.calyxcalculator.dormain.CalculationHandlerInterface
 import com.thalajaat.calyxcalculator.utils.ResponseState
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,7 +20,8 @@ import java.util.Date
 import java.util.TimeZone
 
 class CalculatorViewModel(
-    private val offlineRepository: ConversionDbRepoInterface
+     val offlineRepository: ConversionDbRepoInterface,
+    private val calculatorHandler:CalculationHandlerInterface
 ) : ViewModel() {
 
 
@@ -31,9 +30,8 @@ class CalculatorViewModel(
     var rateState: StateFlow<List<DropDownRateEntity>> =
         rates.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
-    private val _handler = CalculationHandler()
     val geHandler: CalculationHandlerInterface
-        get() = _handler
+        get() = calculatorHandler
 
     private val api = ApiHelper()
 
@@ -56,11 +54,13 @@ class CalculatorViewModel(
     }
 
     var loading = false
-    fun convertCurrency(entity: DropDownRateEntity, onError:(String)->Unit) = viewModelScope.launch {
+    fun convertCurrency(entity: DropDownRateEntity,
+                        onDOne:()->Unit={},
+                        onError:(String)->Unit) = viewModelScope.launch {
         Timber.tag("CURRENCY").v(entity.toString())
         if (loading.not()) {
             Timber.tag("NotLoading").d("Here")
-            val value = _handler.getExpression().value
+            val value = calculatorHandler.getExpression().value
             if (value.containsArithmeticSign() || value.equals("0")) {
                 Timber.tag("ContainsArithmeticSign").d(value.toString())
                 onError("Conversion failed, symbol not allowed")
@@ -75,7 +75,7 @@ class CalculatorViewModel(
                             val ratte = it.data?.conversionRate ?: 0.0
                             val timestamp = it.data?.timeStamp ?: ""
 
-                            _handler.setAnswer(
+                            calculatorHandler.setAnswer(
                                 (value.toDouble()) * (ratte) ,
                                 " ${entity.start}/${entity.end} (${ratte})"
                             )
@@ -87,33 +87,37 @@ class CalculatorViewModel(
                                     )
                                 )
                             )
+                            onDOne()
                         } else {
                             onError("Conversion failed, Network Error")
 
                         }
                     }
                 } else {
-                    _handler.setAnswer(
+                    calculatorHandler.setAnswer(
                         value.toDouble() * (entity.rate),
                         " ${entity.start}/${entity.end} (${entity.rate})"
                     )
+                    onDOne()
                 }
             }
         } else {
             Timber.tag("Here23").d("Here")
             onError("Conversion failed, previous Conversion still ongoing")
+
         }
 
     }
 }
 
-class CalculorViewModelFactory(private val repository: ConversionDbRepoInterface) :
+class CalculorViewModelFactory(private val repository: ConversionDbRepoInterface,
+    private val handler:CalculationHandlerInterface) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CalculatorViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return CalculatorViewModel(repository) as T
+            return CalculatorViewModel(repository,handler) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

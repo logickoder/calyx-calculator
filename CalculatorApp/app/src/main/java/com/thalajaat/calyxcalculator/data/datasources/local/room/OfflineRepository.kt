@@ -45,6 +45,10 @@ class ConversionDbRepo(private val conversionDao: ConversionDao):ConversionDbRep
      return conversionDao.getDropDownRates()
     }
 
+    override fun getDropDownRate2(): List<DropDownRateEntity> {
+        return conversionDao.getDropDownRates2()
+    }
+
 
     override suspend fun deleteAllDropDown() {
        conversionDao.deleteAllDropDownTable()
@@ -62,5 +66,6 @@ interface ConversionDbRepoInterface{
     suspend fun insetDropDOwnRates2(conversionEntity: List<DropDownRateEntity>)
     suspend fun deleteDropDownRate(conversionEntity: DropDownRateEntity)
     fun getDropDownRate() : Flow<List<DropDownRateEntity>>
+    fun getDropDownRate2() : List<DropDownRateEntity>
     suspend fun deleteAllDropDown()
 }
