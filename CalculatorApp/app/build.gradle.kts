@@ -17,6 +17,7 @@ android {
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
+        multiDexEnabled = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -38,7 +39,7 @@ android {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
     buildFeatures {
-        viewBinding =  true
+        viewBinding = true
     }
 }
 
@@ -94,6 +95,7 @@ dependencies {
     implementation(libs.timber)
 
     implementation(libs.mathparserorgmxparser)
+    implementation(libs.multidex)
 
 
 }

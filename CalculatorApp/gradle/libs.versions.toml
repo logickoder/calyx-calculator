@@ -29,6 +29,7 @@ timber = "5.0.1"
 squareup-mockwebserver = "4.10.0"
 navVersion = "2.6.0"
 recyclerview = "1.3.2"
+multidexVersion = "2.0.1"
 
 [libraries]
 androidx-legacy-support-v4 = { module = "androidx.legacy:legacy-support-v4", version.ref = "legacy-support-v4" }
@@ -66,6 +67,7 @@ okhttp3-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version
 mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "mockwebserver" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+multidex = {module = "androidx.multidex:multidex", version.ref = "multidexVersion"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
