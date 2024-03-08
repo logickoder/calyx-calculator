@@ -8,14 +8,9 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
-import android.os.Build.VERSION_CODES
-import android.os.Bundle
 import android.util.Log
-import android.util.SizeF
 import android.view.View
 import android.widget.RemoteViews
-import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import com.thalajaat.calyxcalculator.MainActivity
 import com.thalajaat.calyxcalculator.R
@@ -48,8 +43,6 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
         )
     }
 
-    var remoteViews: RemoteViews? = null
-
     private fun updateAppWidget(
         context: Context,
         appWidgetManager: AppWidgetManager,
@@ -60,53 +53,7 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
     }
 
-    @RequiresApi(VERSION_CODES.S)
-    override fun onAppWidgetOptionsChanged(
-        context: Context,
-        appWidgetManager: AppWidgetManager,
-        id: Int,
-        newOptions: Bundle?
-    ) {
-        super.onAppWidgetOptionsChanged(context, appWidgetManager, id, newOptions)
-        val sizes =
-            newOptions?.getParcelableArrayList<SizeF>(AppWidgetManager.OPTION_APPWIDGET_SIZES)
-
-        if (sizes.isNullOrEmpty()) {
-            return
-        }
-
-        sizes.forEach { size ->
-            val remoteViews = createRemoteViews(context, size)
-
-            appWidgetManager.updateAppWidget(id, remoteViews)
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.S)
-    private fun createRemoteViews(context: Context, size: SizeF): RemoteViews {
-        val smallView = RemoteViews(context.packageName, R.layout.layout_calculator_widget_small)
-        val wideView = RemoteViews(context.packageName, R.layout.layout_calculator_widget_wide)
-        val tallView = RemoteViews(context.packageName, R.layout.layout_calculator_widget_tall)
-
-
-        return when {
-            size.width == 582.0952f && size.height == 193.5238f -> smallView
-            size.width == 730.6667f && size.height == 193.5238f -> wideView
-            size.width == 730.6667f && size.height == 262.09525f -> tallView
-            else -> tallView
-        }
-    }
-
-
-    override fun onUpdate(
-        context: Context?,
-        appWidgetManager: AppWidgetManager?,
-        appWidgetIds: IntArray?
-    ) {
-        super.onUpdate(context, appWidgetManager, appWidgetIds)
-    }
-
-   /* override fun onUpdate(
+   override fun onUpdate(
         context: Context,
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
@@ -114,7 +61,7 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
         // Perform this loop procedure for each widget that belongs to this
         // provider.
         val widgetManager = AppWidgetManager.getInstance(context.applicationContext)
-        val remoteViews = RemoteViews(context.packageName, R.layout.layout_calculator_widget_wide)
+        val remoteViews = RemoteViews(context.packageName, R.layout.layout_calculator_widget)
 
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -284,10 +231,15 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
                 getPendingSelfIntent(context, clear)
             )
 
+            remoteViews.setOnClickPendingIntent(
+                R.id.button_ans,
+                getPendingSelfIntent(context, answer)
+            )
+
             updateAppWidget(context, appWidgetManager, appWidgetId, remoteViews)
         }
 
-    }*/
+    }
 
     val onebuttonclick = "1"
     val twobuttonclick = "2"
@@ -310,6 +262,7 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
     val open = "open"
     val submit = "submit"
     val EXTRA = "EXTRA"
+    val answer = "answer"
     fun getPendingSelfIntent(
         context: Context?,
         action: String?,
@@ -327,17 +280,13 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        super.onReceive(context, intent)
-    }
-
-    /*override fun onReceive(context: Context?, intent: Intent?) {
         val action = intent?.action
         Timber.tag("ACTION").v(action)
         Timber.tag("ID").v(intent?.getIntExtra("ID", 0).toString())
         Timber.tag("IDS")
             .v(intent?.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS).toString())
         val entity = intent?.getStringExtra(EXTRA)
-        val remoteViews = RemoteViews(context!!.packageName, R.layout.layout_calculator_widget_wide)
+        val remoteViews = RemoteViews(context!!.packageName, R.layout.layout_calculator_widget)
         val componentName = ComponentName(context, ExampleAppWidgetProvider::class.java)
         when (action) {
 
@@ -387,6 +336,37 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
                     )
                 )
                 calculationHandler.removeValue()
+                var text = calculationHandler.getExpression().value
+                    .replace("/", "÷")
+                    .replace("*", "×").replace("#", "%")
+                text.also {
+                    if (it.length > 1) {
+                        if (it[1].toString() != ".") {
+                            text = it.trimStart("0".toCharArray().first())
+                        }
+                        it
+                    } else {
+                        it
+                    }
+                }
+                val text2 = calculationHandler.getAnswer().value
+                remoteViews.setTextViewText(R.id.input, text)
+                remoteViews.setTextViewText(R.id.output, text2)
+                for (appWidgetId in appWidgetIds) {
+                    appWidgetManager.updateAppWidget(componentName, remoteViews)
+                }
+            }
+            answer -> {
+                val appWidgetManager = AppWidgetManager.getInstance(context)
+                val appWidgetIds = appWidgetManager.getAppWidgetIds(
+                    ComponentName(
+                        context!!,
+                        ExampleAppWidgetProvider::class.java
+                    )
+                )
+                calculationHandler.clearInput()
+                calculationHandler.addValue(calculationHandler.getAnswer().value.split(" ").first().toString())
+
                 var text = calculationHandler.getExpression().value
                     .replace("/", "÷")
                     .replace("*", "×").replace("#", "%")
@@ -524,7 +504,7 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
         }
 
         super.onReceive(context, intent)
-    }*/
+    }
 
     override fun onEnabled(context: Context?) {
         super.onEnabled(context)

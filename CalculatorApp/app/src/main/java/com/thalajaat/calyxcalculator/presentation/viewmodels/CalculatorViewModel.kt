@@ -60,10 +60,10 @@ class CalculatorViewModel(
         Timber.tag("CURRENCY").v(entity.toString())
         if (loading.not()) {
             Timber.tag("NotLoading").d("Here")
-            val value = calculatorHandler.getExpression().value
-            if (value.containsArithmeticSign() || value.equals("0")) {
+            val value = calculatorHandler.getAnswer().value
+            if ( value.equals("0") || value.isEmpty()) {
                 Timber.tag("ContainsArithmeticSign").d(value.toString())
-                onError("Conversion failed, symbol not allowed")
+                onError("Conversion failed, please enter a value")
             } else {
                 val isLongerThanAnHour = entity.timestamp.isOlderThanOneHourLegacy()
                 if (isLongerThanAnHour) {
