@@ -231,6 +231,11 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
                 getPendingSelfIntent(context, clear)
             )
 
+            remoteViews.setOnClickPendingIntent(
+                R.id.button_ans,
+                getPendingSelfIntent(context, answer)
+            )
+
             updateAppWidget(context, appWidgetManager, appWidgetId, remoteViews)
         }
 
@@ -257,6 +262,7 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
     val open = "open"
     val submit = "submit"
     val EXTRA = "EXTRA"
+    val answer = "answer"
     fun getPendingSelfIntent(
         context: Context?,
         action: String?,
@@ -330,6 +336,37 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
                     )
                 )
                 calculationHandler.removeValue()
+                var text = calculationHandler.getExpression().value
+                    .replace("/", "÷")
+                    .replace("*", "×").replace("#", "%")
+                text.also {
+                    if (it.length > 1) {
+                        if (it[1].toString() != ".") {
+                            text = it.trimStart("0".toCharArray().first())
+                        }
+                        it
+                    } else {
+                        it
+                    }
+                }
+                val text2 = calculationHandler.getAnswer().value
+                remoteViews.setTextViewText(R.id.input, text)
+                remoteViews.setTextViewText(R.id.output, text2)
+                for (appWidgetId in appWidgetIds) {
+                    appWidgetManager.updateAppWidget(componentName, remoteViews)
+                }
+            }
+            answer -> {
+                val appWidgetManager = AppWidgetManager.getInstance(context)
+                val appWidgetIds = appWidgetManager.getAppWidgetIds(
+                    ComponentName(
+                        context!!,
+                        ExampleAppWidgetProvider::class.java
+                    )
+                )
+                calculationHandler.clearInput()
+                calculationHandler.addValue(calculationHandler.getAnswer().value.split(" ").first().toString())
+
                 var text = calculationHandler.getExpression().value
                     .replace("/", "÷")
                     .replace("*", "×").replace("#", "%")

@@ -3,14 +3,14 @@
     android:layout_width="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:minWidth="240dp"
+    android:minWidth="180dp"
     android:padding="15dp"
     android:layout_height="wrap_content">
 
     <EditText
         android:layout_width="match_parent"
         android:id="@+id/search"
-        android:minWidth="150dp"
+        android:minWidth="110dp"
         android:background="@drawable/search_bg"
         android:paddingHorizontal="15dp"
         android:paddingVertical="9dp"
