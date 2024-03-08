@@ -370,14 +370,14 @@
             android:layout_height="match_parent"
             android:layout_margin="3dp"
             android:layout_weight="1"
+            android:background="@drawable/equal_button"
+            android:contentDescription="@string/add"
+            android:fontFamily="@font/montserrat"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:paddingBottom="110dp"
-            android:background="@drawable/equal_button"
-            android:fontFamily="@font/montserrat"
             android:src="@drawable/ic_equal_to"
-            android:contentDescription="@string/add"
-            app:tint="@color/white"/>
+            app:tint="@color/white" />
 
     </LinearLayout>
 
