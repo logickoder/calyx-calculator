@@ -21,8 +21,30 @@ class CalculationHandler():CalculationHandlerInterface {
             // Show Result
     }
 
+    override fun clearOutput() {
+        answer.value = ""
+    }
+
+    override fun clearInput() {
+        expression.value = ""
+    }
+
     override fun addValue(value: String){
         expression.value += value
+
+            try {
+                val e = Expression(expression.value)
+                val result = e.calculate()
+                if (result.isNaN()) {
+                    return
+                } else {
+                    answer.value = DecimalFormat("0.######").format(result).toString()
+                }
+            }
+            catch (e:Exception){
+                e.printStackTrace()
+            }
+
     }
 
     override fun removeValue() {
@@ -34,6 +56,7 @@ class CalculationHandler():CalculationHandlerInterface {
             expression.update {
                 it.dropLast(1)
             }
+            addValue("")
         }
         catch (e:Exception) {
             expression.value ="0"
@@ -50,7 +73,8 @@ class CalculationHandler():CalculationHandlerInterface {
                 expression.value+="-"
             }
             Arithemetics.MODULUS -> {
-                expression.value+="#"
+                expression.value+="%"
+                addValue("")
             }
             Arithemetics.MULTIPLY -> {
                 expression.value+="*"
@@ -97,6 +121,8 @@ interface CalculationHandlerInterface {
     fun getExpression():MutableStateFlow<String>
     fun getAnswer():MutableStateFlow<String>
     fun setAnswer(d: Double,suffix:String)
+    fun clearOutput()
+    fun clearInput()
 }
 
 

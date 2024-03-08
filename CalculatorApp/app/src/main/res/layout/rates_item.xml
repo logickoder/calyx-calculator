@@ -9,9 +9,9 @@
 
     <ImageView
         android:id="@+id/pin"
-        android:layout_width="25dp"
+        android:layout_width="20dp"
         android:src="@drawable/pin_rate"
-        android:layout_height="25dp"
+        android:layout_height="20dp"
         app:tint="?colorOnPrimary" />
 
     <Space
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:text="GBP/EUR"
         android:id="@+id/name"
-        android:textSize="14sp"
+        android:textSize="11sp"
         android:layout_gravity="center"
         android:fontFamily="@font/montserrat_semibold"
         android:layout_height="wrap_content"/>

@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.PopupWindow
@@ -104,8 +105,12 @@ class MainActivity : AppCompatActivity() {
 
 
     var job: Job? = null
-
+var oldDialog :PopupWindow?=null
     private fun init() {
+        val marginDp = 16
+// Convert dp to pixels
+        val marginPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, marginDp.toFloat(), resources.displayMetrics).toInt()
+
         binding.apply {
             button0.setClickListeners("0")
             button1.setClickListeners("1")
@@ -134,7 +139,14 @@ class MainActivity : AppCompatActivity() {
             buttonPeriod.setClickListeners(".")
             mOutput.setOnClickListener {
                 if (mOutput.text.isNotEmpty()) {
-                    calculationHandler.addValue(mOutput.text.toString())
+                    calculationHandler.clearInput()
+                    calculationHandler.addValue(mOutput.text.split(" ").first().toString())
+                }
+            }
+            buttonAns.setOnClickListener {
+                if (mOutput.text.isNotEmpty()) {
+                    calculationHandler.clearInput()
+                    calculationHandler.addValue(mOutput.text.split(" ").first().toString())
                 }
             }
             buttonDivision.setAritheieticListener(Arithemetics.DIVIDE)
@@ -155,6 +167,8 @@ class MainActivity : AppCompatActivity() {
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply {
+                    oldDialog?.dismiss()
+                    oldDialog = this
                     job?.cancel()
                     // Set an elevation value for the popup window
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -182,6 +196,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
 
+
                     // If you need to dismiss the popup when touched outside
                     isOutsideTouchable = true
 
@@ -191,16 +206,13 @@ class MainActivity : AppCompatActivity() {
                     // Optional: animate the popup
                     animationStyle = android.R.style.Animation_Dialog
 
-                    // Apply the background drawable
-                    setBackgroundDrawable(
-                        ContextCompat.getDrawable(
-                            this@MainActivity,
-                            R.drawable.popup_background
-                        )
-                    )
 
+
+                    // Apply the background drawable
+                    setBackgroundDrawable(ContextCompat.getDrawable(this@MainActivity, R.drawable.popup_background))
                     // Show the popup window below the icon
-                    showAsDropDown(view)
+                    showAsDropDown(view,-30, 0)
+
                 }
             }
 
