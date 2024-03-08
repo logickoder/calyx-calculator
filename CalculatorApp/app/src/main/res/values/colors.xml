@@ -24,4 +24,6 @@
     <color name="colorSurfaceDark">#4D4D4D</color>
     <color name="colorSurfaceVariantDark">#444444</color>
     <color name="colorAccentDark">#4C4C4C</color>
+
+    <color name="operationOrange">#FE9E0B</color>
 </resources>

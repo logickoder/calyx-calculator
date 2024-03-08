@@ -4,62 +4,180 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="bottom"
-    android:gravity="bottom"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
-
-    <TextView
-        android:id="@+id/m_output"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="12dp"
-        android:text=""
-        android:layout_marginBottom="5dp"
-        android:fontFamily="@font/montserrat"
-        android:textAlignment="textEnd"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/input"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/montserrat"
-        android:text="@string/_0"
-        android:textAlignment="textEnd"
-        android:textSize="48sp" />
+    android:theme="@style/Base.Theme.CalyxCalculatorWidget"
+    android:background="?android:attr/colorBackground"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        android:layout_marginTop="26dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:orientation="horizontal">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/pinnedcoinslist"
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             android:layout_margin="3dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="4"
-            tools:listitem="@layout/single_pinned_currency_view" />
+            android:contentDescription="@string/calculator"
+            android:fontFamily="@font/montserrat"
+            android:src="@drawable/ic_calculator_icon"
+            android:tint="?attr/colorOnPrimary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="3dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:textStyle="bold"
+            android:includeFontPadding="false"
+            android:text="@string/calculator"
+            android:textSize="22sp"/>
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+
+            <LinearLayout
+                android:id="@+id/button_first_conversion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/pinned_widget_background"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="0dp"
+                    android:id="@+id/first_rate"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:includeFontPadding="false"
+                    android:padding="10dp"
+                    android:text="@string/pinned_currency_sample"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="visible"
+                    app:cornerRadius="50dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/button_second_conversion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/pinned_widget_background"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/second_rate"
+                    android:visibility="visible"
+                    app:cornerRadius="50dp"
+                    android:text="@string/pinned_currency_sample"
+                    android:elevation="0dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:includeFontPadding="false"
+                    android:padding="10dp"
+                    android:textStyle="bold"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="10sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/button_third_conversion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/pinned_widget_background"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:gravity="center"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    app:cornerRadius="50dp"
+                    android:id="@+id/third_rate"
+                    android:text="@string/pinned_currency_sample"
+                    android:elevation="0dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:includeFontPadding="false"
+                    android:padding="10dp"
+                    android:textStyle="bold"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="10sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/button_fourth_conversion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/pinned_widget_background"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    app:cornerRadius="50dp"
+                    android:id="@+id/fourth_rate"
+                    android:text="@string/pinned_currency_sample"
+                    android:elevation="0dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:includeFontPadding="false"
+                    android:padding="10dp"
+                    android:textStyle="bold"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="10sp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <ImageButton
             android:id="@+id/button_more"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -67,14 +185,61 @@
             android:fontFamily="@font/montserrat"
             android:src="@drawable/ic_more"
             android:contentDescription="@string/more_options"
-            app:tint="?android:attr/textColor" />
+            android:tint="?attr/colorOnPrimary" />
 
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/output_widget_background"
+        android:orientation="vertical">
+
+
+
+        <TextView
+            android:id="@+id/output"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:layout_gravity="end"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="21dp"
+            android:layout_marginEnd="21dp"
+            android:layout_marginBottom="3dp"
+            android:includeFontPadding="false"
+            android:fontFamily="@font/montserrat"
+            android:text=""
+            android:textColor="@color/white"
+            android:textAlignment="textEnd"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:layout_gravity="end"
+            android:layout_marginStart="21dp"
+            android:layout_marginEnd="21dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:includeFontPadding="false"
+            android:text="@string/_0"
+            android:textStyle="bold"
+            android:textAlignment="textEnd"
+            android:textSize="32sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:baselineAligned="false"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
@@ -91,7 +256,7 @@
             android:fontFamily="@font/montserrat"
             android:src="@drawable/ic_seven"
             android:contentDescription="@string/add"
-            app:tint="?android:attr/textColor"/>
+            android:tint="?android:attr/textColor"/>
 
 
         <ImageButton
@@ -104,7 +269,7 @@
             android:fontFamily="@font/montserrat"
             android:src="@drawable/ic_eight"
             android:contentDescription="@string/add"
-            app:tint="?android:attr/textColor"/>
+            android:tint="?android:attr/textColor"/>
 
 
         <ImageButton
@@ -117,7 +282,7 @@
             android:fontFamily="@font/montserrat"
             android:src="@drawable/ic_nine"
             android:contentDescription="@string/add"
-            app:tint="?android:attr/textColor"/>
+            android:tint="?android:attr/textColor"/>
 
 
         <ImageButton
@@ -130,7 +295,7 @@
             android:fontFamily="@font/montserrat"
             android:src="@drawable/ic_divide"
             android:contentDescription="@string/add"
-            app:tint="@color/operationOrange"/>
+            android:tint="@color/operationOrange"/>
 
 
         <ImageButton
@@ -143,7 +308,7 @@
             android:fontFamily="@font/montserrat"
             android:src="@drawable/ic_delete"
             android:contentDescription="@string/add"
-            app:tint="@color/operationOrange"/>
+            android:tint="@color/operationOrange"/>
 
 
     </LinearLayout>
@@ -153,6 +318,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_weight="1"
         android:layout_marginEnd="8dp"
         android:orientation="horizontal">
 
@@ -172,7 +338,7 @@
                 android:fontFamily="@font/montserrat"
                 android:src="@drawable/ic_four"
                 android:contentDescription="@string/add"
-                app:tint="?android:attr/textColor"/>
+                android:tint="?android:attr/textColor"/>
 
 
             <ImageButton
@@ -185,7 +351,7 @@
                 android:fontFamily="@font/montserrat"
                 android:src="@drawable/ic_five"
                 android:contentDescription="@string/add"
-                app:tint="?android:attr/textColor"/>
+                android:tint="?android:attr/textColor"/>
 
 
             <ImageButton
@@ -198,7 +364,7 @@
                 android:fontFamily="@font/montserrat"
                 android:src="@drawable/ic_six"
                 android:contentDescription="@string/add"
-                app:tint="?android:attr/textColor"/>
+                android:tint="?android:attr/textColor"/>
 
 
             <ImageButton
@@ -211,7 +377,7 @@
                 android:fontFamily="@font/montserrat"
                 android:src="@drawable/ic_multiplication"
                 android:contentDescription="@string/multiply"
-                app:tint="@color/operationOrange" />
+                android:tint="@color/operationOrange" />
 
             <ImageButton
                 android:id="@+id/button_percentage"
@@ -223,7 +389,7 @@
                 android:fontFamily="@font/montserrat"
                 android:src="@drawable/ic_percentage"
                 android:contentDescription="@string/add"
-                app:tint="@color/operationOrange"/>
+                android:tint="@color/operationOrange"/>
 
 
 
@@ -234,6 +400,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
@@ -263,7 +430,7 @@
                     android:fontFamily="@font/montserrat"
                     android:src="@drawable/ic_one"
                     android:contentDescription="@string/add"
-                    app:tint="?android:attr/textColor"/>
+                    android:tint="?android:attr/textColor"/>
 
                 <ImageButton
                     android:id="@+id/button2"
@@ -275,7 +442,7 @@
                     android:fontFamily="@font/montserrat"
                     android:src="@drawable/ic_two"
                     android:contentDescription="@string/add"
-                    app:tint="?android:attr/textColor"/>
+                    android:tint="?android:attr/textColor"/>
 
                 <ImageButton
                     android:id="@+id/button3"
@@ -287,7 +454,7 @@
                     android:fontFamily="@font/montserrat"
                     android:src="@drawable/ic_three"
                     android:contentDescription="@string/add"
-                    app:tint="?android:attr/textColor"/>
+                    android:tint="?android:attr/textColor"/>
 
 
                 <ImageButton
@@ -300,7 +467,7 @@
                     android:fontFamily="@font/montserrat"
                     android:src="@drawable/ic_subtraction"
                     android:contentDescription="@string/minus"
-                    app:tint="@color/operationOrange"/>
+                    android:tint="@color/operationOrange"/>
 
             </LinearLayout>
 
@@ -320,7 +487,7 @@
                     android:fontFamily="@font/montserrat"
                     android:src="@drawable/ic_zero"
                     android:contentDescription="@string/add"
-                    app:tint="?android:attr/textColor"/>
+                    android:tint="?android:attr/textColor"/>
 
 
                 <ImageButton
@@ -333,7 +500,7 @@
                     android:fontFamily="@font/montserrat"
                     android:src="@drawable/ic_dot"
                     android:contentDescription="@string/add"
-                    app:tint="?android:attr/textColor"/>
+                    android:tint="?android:attr/textColor"/>
 
                 <ImageButton
                     android:id="@+id/button_ans"
@@ -345,7 +512,7 @@
                     android:fontFamily="@font/montserrat"
                     android:src="@drawable/ic_ans"
                     android:contentDescription="@string/add"
-                    app:tint="?android:attr/textColor"/>
+                    android:tint="?android:attr/textColor"/>
 
                 <ImageButton
                     android:id="@+id/button_add"
@@ -357,7 +524,7 @@
                     android:fontFamily="@font/montserrat"
                     android:src="@drawable/ic_add"
                     android:contentDescription="@string/add"
-                    app:tint="@color/operationOrange"/>
+                    android:tint="@color/operationOrange"/>
 
             </LinearLayout>
 
@@ -366,19 +533,19 @@
 
         <ImageButton
             android:id="@+id/button_equal_to"
-            android:layout_width="100dp"
+            android:layout_width="120dp"
             android:layout_height="match_parent"
             android:layout_margin="3dp"
             android:layout_weight="1"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="110dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             android:background="@drawable/equal_button"
             android:fontFamily="@font/montserrat"
             android:src="@drawable/ic_equal_to"
             android:contentDescription="@string/add"
-            app:tint="@color/white"/>
+            android:tint="@color/white"/>
 
     </LinearLayout>
+
 
 </LinearLayout>
