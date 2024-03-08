@@ -11,14 +11,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_marginTop="26dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:layout_gravity="center_vertical"
             android:layout_margin="3dp"
             android:contentDescription="@string/calculator"
@@ -47,6 +48,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_marginTop="10dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
@@ -149,8 +151,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/pinned_widget_background"
                 android:layout_gravity="center"
-                android:gravity="center"
                 android:visibility="gone"
+                android:gravity="center"
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="3dp">
 
@@ -190,6 +192,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:layout_marginStart="8dp"
@@ -230,10 +233,10 @@
             android:text="@string/_0"
             android:textStyle="bold"
             android:textAlignment="textEnd"
-            android:textSize="32sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
@@ -527,6 +530,317 @@
             android:src="@drawable/ic_equal_to"
             android:contentDescription="@string/equal_to"
             app:tint="?android:attr/textColor" />
+
+    </LinearLayout>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:baselineAligned="false"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal">
+
+
+        <ImageButton
+            android:id="@+id/button7"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat"
+            android:src="@drawable/ic_seven"
+            android:contentDescription="@string/add"
+            android:tint="?android:attr/textColor"/>
+
+
+        <ImageButton
+            android:id="@+id/button8"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat"
+            android:src="@drawable/ic_eight"
+            android:contentDescription="@string/add"
+            android:tint="?android:attr/textColor"/>
+
+
+        <ImageButton
+            android:id="@+id/button9"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat"
+            android:src="@drawable/ic_nine"
+            android:contentDescription="@string/add"
+            android:tint="?android:attr/textColor"/>
+
+
+        <ImageButton
+            android:id="@+id/button_division"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat"
+            android:src="@drawable/ic_divide"
+            android:contentDescription="@string/add"
+            android:tint="@color/operationOrange"/>
+
+
+        <ImageButton
+            android:id="@+id/button_delete"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat"
+            android:src="@drawable/ic_delete"
+            android:contentDescription="@string/add"
+            android:tint="@color/operationOrange"/>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_weight="1"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/button4"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/montserrat"
+                android:src="@drawable/ic_four"
+                android:contentDescription="@string/add"
+                android:tint="?android:attr/textColor"/>
+
+
+            <ImageButton
+                android:id="@+id/button5"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/montserrat"
+                android:src="@drawable/ic_five"
+                android:contentDescription="@string/add"
+                android:tint="?android:attr/textColor"/>
+
+
+            <ImageButton
+                android:id="@+id/button6"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/montserrat"
+                android:src="@drawable/ic_six"
+                android:contentDescription="@string/add"
+                android:tint="?android:attr/textColor"/>
+
+
+            <ImageButton
+                android:id="@+id/button_multiplication"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/montserrat"
+                android:src="@drawable/ic_multiplication"
+                android:contentDescription="@string/multiply"
+                android:tint="@color/operationOrange" />
+
+            <ImageButton
+                android:id="@+id/button_percentage"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/montserrat"
+                android:src="@drawable/ic_percentage"
+                android:contentDescription="@string/add"
+                android:tint="@color/operationOrange"/>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/button1"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat"
+                    android:src="@drawable/ic_one"
+                    android:contentDescription="@string/add"
+                    android:tint="?android:attr/textColor"/>
+
+                <ImageButton
+                    android:id="@+id/button2"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat"
+                    android:src="@drawable/ic_two"
+                    android:contentDescription="@string/add"
+                    android:tint="?android:attr/textColor"/>
+
+                <ImageButton
+                    android:id="@+id/button3"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat"
+                    android:src="@drawable/ic_three"
+                    android:contentDescription="@string/add"
+                    android:tint="?android:attr/textColor"/>
+
+
+                <ImageButton
+                    android:id="@+id/button_subtraction"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat"
+                    android:src="@drawable/ic_subtraction"
+                    android:contentDescription="@string/minus"
+                    android:tint="@color/operationOrange"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/button0"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat"
+                    android:src="@drawable/ic_zero"
+                    android:contentDescription="@string/add"
+                    android:tint="?android:attr/textColor"/>
+
+
+                <ImageButton
+                    android:id="@+id/button_period"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat"
+                    android:src="@drawable/ic_dot"
+                    android:contentDescription="@string/add"
+                    android:tint="?android:attr/textColor"/>
+
+                <ImageButton
+                    android:id="@+id/button_ans"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat"
+                    android:src="@drawable/ic_ans"
+                    android:contentDescription="@string/add"
+                    android:tint="?android:attr/textColor"/>
+
+                <ImageButton
+                    android:id="@+id/button_add"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat"
+                    android:src="@drawable/ic_add"
+                    android:contentDescription="@string/add"
+                    android:tint="@color/operationOrange"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/button_equal_to"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:background="@drawable/equal_button"
+            android:fontFamily="@font/montserrat"
+            android:src="@drawable/ic_equal_to"
+            android:contentDescription="@string/add"
+            android:tint="@color/white"/>
 
     </LinearLayout>
 
