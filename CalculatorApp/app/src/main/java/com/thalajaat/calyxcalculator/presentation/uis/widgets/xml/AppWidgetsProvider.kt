@@ -235,6 +235,10 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
                 R.id.button_ans,
                 getPendingSelfIntent(context, answer)
             )
+//            remoteViews.setOnClickPendingIntent(
+//                R.id.conversion_rate_output,
+//                getPendingSelfIntent(context, conversionRate)
+//            )
 
             updateAppWidget(context, appWidgetManager, appWidgetId, remoteViews)
         }
@@ -263,6 +267,7 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
     val submit = "submit"
     val EXTRA = "EXTRA"
     val answer = "answer"
+    val conversionRate = "conversionRate"
     fun getPendingSelfIntent(
         context: Context?,
         action: String?,
@@ -300,7 +305,8 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
                 )
                 val entity = Gson().fromJson(entity, DropDownRateEntity::class.java)
                 if (entity != null) {
-                    getVM(context).convertCurrency(entity, {
+                    val currentValue = calculationHandler.getAnswer().value
+                    getVM(context).convertCurrency(currentValue,entity, {
                         var text = calculationHandler.getExpression().value
                             .replace("/", "÷")
                             .replace("*", "×").replace("#", "%")
@@ -456,7 +462,10 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
                     appWidgetManager.updateAppWidget(componentName, remoteViews)
                 }
             }
-
+//            conversionRate -> {
+//                val conversion = calculationHandler.getTotalCurrency().value
+//                remoteViews.setTextViewText(R.id.conversion_rate_output, conversion)
+//            }
 
             onebuttonclick, dot, twobuttonclick, threebuttonclick, fourbuttonclick, fivebuttonclick, sixbuttonclick, sevenbuttonclick, eightbuttonclick, ninebuttonclick, zerobuttonclick -> {
                 val appWidgetManager = AppWidgetManager.getInstance(context)
