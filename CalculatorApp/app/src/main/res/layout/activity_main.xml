@@ -7,17 +7,17 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/input"
+            android:id="@+id/m_output"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:fontFamily="@font/montserrat"
             android:text="@string/_0"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/m_output"
-            app:layout_constraintEnd_toEndOf="@+id/m_output"
+            app:layout_constraintBottom_toTopOf="@+id/input"
+            app:layout_constraintEnd_toEndOf="@+id/input"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/m_output"
+            app:layout_constraintStart_toStartOf="@+id/input"
             tools:text="2,000" />
 
 
@@ -52,7 +52,7 @@
         </LinearLayout>
 
     <TextView
-        android:id="@+id/m_output"
+        android:id="@+id/input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"

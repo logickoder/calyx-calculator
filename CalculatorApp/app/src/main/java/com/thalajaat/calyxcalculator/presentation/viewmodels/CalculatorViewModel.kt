@@ -66,6 +66,11 @@ class CalculatorViewModel(
                 Timber.tag("ContainsArithmeticSign").d(value.toString())
                 onError("Conversion failed, please enter a value")
             } else {
+                val parseable = value.contains("(")
+                var newvalue = value
+                if(parseable){
+                    newvalue = value.split(" ").first()
+                }
                 val isLongerThanAnHour = entity.timestamp.isOlderThanOneHourLegacy()
                 if (isLongerThanAnHour) {
                     Timber.tag("IsLongerThanHour").d("Here")
@@ -77,7 +82,7 @@ class CalculatorViewModel(
                             val timestamp = it.data?.timeStamp ?: ""
 
                             calculatorHandler.setAnswer(
-                                value.toDouble() * (entity.rate),
+                                newvalue.toDouble() * ratte,
                                 " ${entity.start}/${entity.end} (${ratte})"
                             )
                             offlineRepository.insetDropDOwnRates(
@@ -96,7 +101,7 @@ class CalculatorViewModel(
                     }
                 } else {
                     calculatorHandler.setAnswer(
-                        value.toDouble() * (entity.rate),
+                        newvalue.toDouble() * (entity.rate),
                         " ${entity.start}/${entity.end} (${entity.rate})"
                     )
                     onDOne()
