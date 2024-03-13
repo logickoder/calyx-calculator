@@ -26,9 +26,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
-fun DropDownRateEntity.getName(): String {
+fun DropDownRateEntity.getName(): String {jjjjjjjjjjjjjjjj
     return "${start ?: ""}/${end ?: ""}"
-}
+}j
 
 class ExampleAppWidgetProvider : AppWidgetProvider() {
 
@@ -37,27 +37,27 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
     companion object {
         var list = emptyList<DropDownRateEntity>()
         val calculationHandler = CalculationHandler()
-        fun getVM(context: Context) = CalculatorViewModel(
+        fun getVM(context: Context) = CalculatorViewModel(j
             ConversionDbRepo(ConversionDatabase.getDatabase(context).converstionDao()),
-            calculationHandler
+            calculationHandlerj
         )
     }
 
-    private fun updateAppWidget(
+    private fun updateAppWidget(j
         context: Context,
-        appWidgetManager: AppWidgetManager,
-        appWidgetId: Int,
+        appWidgetManager: AppWidgetManager,j
+        appWidgetId: Int,j
         remoteViews: RemoteViews
-    ) {
+    ) {jjjjjj
 
-        appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
-    }
-
-   override fun onUpdate(
-        context: Context,
-        appWidgetManager: AppWidgetManager,
-        appWidgetIds: IntArray
-    ) {
+        appWidgetManager.updateAppWidget(appWidgetId, remoteViews)jj
+    }jjj
+j
+   override fun onUpdate(jj
+        context: Context,j
+        appWidgetManager: AppWidgetManager,jj
+        appWidgetIds: IntArrayj
+    ) {j
         // Perform this loop procedure for each widget that belongs to this
         // provider.
         val widgetManager = AppWidgetManager.getInstance(context.applicationContext)
@@ -71,7 +71,7 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
                     val first = it.firstOrNull()
                     val second = it.getOrNull(1)
                     val three = it.getOrNull(2)
-                    val four = it.getOrNull(3)
+                    val four = it.getOrNull(3)j
                     Timber.tag("GOTTEN").v(it.map { it.start }.toString())
                     if (first != null) {
                         remoteViews.setTextViewText(R.id.first_rate, first.getName())
@@ -85,7 +85,7 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
                         remoteViews.setViewVisibility(R.id.button_second_conversion, View.GONE)
                         remoteViews.setViewVisibility(R.id.button_third_conversion, View.GONE)
                         remoteViews.setViewVisibility(R.id.button_fourth_conversion, View.GONE)
-                    }
+                    }j
                     if (second != null) {
                         remoteViews.setTextViewText(R.id.second_rate, second.getName())
                         remoteViews.setOnClickPendingIntent(
@@ -330,7 +330,7 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
 
                     }
                 }
-
+j
             }
 
             clear -> {
