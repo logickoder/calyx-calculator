@@ -11,6 +11,7 @@
         <item name="colorSurface">@color/colorSurfaceDark</item>
         <item name="colorSecondaryVariant">@color/colorSurfaceVariantDark</item>
         <item name="android:colorAccent">@color/colorAccentDark</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
    <!--  Homescreen Widget Theme

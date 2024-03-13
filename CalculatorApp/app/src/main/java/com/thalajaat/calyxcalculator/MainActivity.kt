@@ -11,16 +11,19 @@ import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thalajaat.calyxcalculator.data.datasources.local.room.ConversionDatabase
 import com.thalajaat.calyxcalculator.data.datasources.local.room.ConversionDbRepo
+import com.thalajaat.calyxcalculator.data.datasources.local.room.DropDownRateEntity
 import com.thalajaat.calyxcalculator.databinding.ActivityMainBinding
 import com.thalajaat.calyxcalculator.databinding.PopupLayoutBinding
 import com.thalajaat.calyxcalculator.dormain.Arithemetics
 import com.thalajaat.calyxcalculator.dormain.CalculationHandler
+import com.thalajaat.calyxcalculator.presentation.uis.adapter.Convert
 import com.thalajaat.calyxcalculator.presentation.uis.adapter.PinnedConiRecyclerViewAdapter
 import com.thalajaat.calyxcalculator.presentation.uis.adapter.RatesAdapter
 import com.thalajaat.calyxcalculator.presentation.uis.widgets.xml.ExampleAppWidgetProvider
@@ -28,11 +31,13 @@ import com.thalajaat.calyxcalculator.presentation.viewmodels.CalculatorViewModel
 import com.thalajaat.calyxcalculator.presentation.viewmodels.CalculorViewModelFactory
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), Convert {
     val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     private val calculatorRepository by lazy {
@@ -56,19 +61,22 @@ class MainActivity : AppCompatActivity() {
             if (it.isPinned) {
                 calculatorViewModel.unpin(it)
             } else {
-                if(calculatorViewModel.rateState.value.filter { it.isPinned } .size<4) {
+                if (calculatorViewModel.rateState.value.filter { it.isPinned }.size < 4) {
                     calculatorViewModel.pin(it)
-                }
-                else{
-                    Toast.makeText(this, "You can’t pin more than 4 times, kindly unpin another to pin another selected currency.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(
+                        this,
+                        "You can’t pin more than 4 times, kindly unpin another to pin another selected currency.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
     }
-    val pinnedadapter by lazy {
-        PinnedConiRecyclerViewAdapter(this) {
-
-            calculatorViewModel.convertCurrency(it) {
+    private val pinnedadapter by lazy {
+        PinnedConiRecyclerViewAdapter(this, this, calculationHandler) {
+            val value = calculationHandler.getAnswer().value
+            calculatorViewModel.convertCurrency(value, it) {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
@@ -105,11 +113,15 @@ class MainActivity : AppCompatActivity() {
 
 
     var job: Job? = null
-var oldDialog :PopupWindow?=null
+    var oldDialog: PopupWindow? = null
     private fun init() {
         val marginDp = 16
 // Convert dp to pixels
-        val marginPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, marginDp.toFloat(), resources.displayMetrics).toInt()
+        val marginPx = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            marginDp.toFloat(),
+            resources.displayMetrics
+        ).toInt()
 
         binding.apply {
             button0.setClickListeners("0")
@@ -151,10 +163,14 @@ var oldDialog :PopupWindow?=null
             }
             buttonDivision.setAritheieticListener(Arithemetics.DIVIDE)
             buttonEqualTo.setOnClickListener {
+                if (mOutput.text.isNotEmpty()) {
+                    calculationHandler.clearInput()
+                    calculationHandler.addValue(mOutput.text.split(" ").first().toString())
+                }
                 calculationHandler.calculate(onError = {
 
                 }) {
-
+                    calculationHandler.addValue(mOutput.text.split(" ").first().toString())
                 }
             }
             buttonPercentage.setAritheieticListener(Arithemetics.MODULUS)
@@ -207,11 +223,15 @@ var oldDialog :PopupWindow?=null
                     animationStyle = android.R.style.Animation_Dialog
 
 
-
                     // Apply the background drawable
-                    setBackgroundDrawable(ContextCompat.getDrawable(this@MainActivity, R.drawable.popup_background))
+                    setBackgroundDrawable(
+                        ContextCompat.getDrawable(
+                            this@MainActivity,
+                            R.drawable.popup_background
+                        )
+                    )
                     // Show the popup window below the icon
-                    showAsDropDown(view,-30, 0)
+                    showAsDropDown(view, -30, 0)
 
                 }
             }
@@ -242,7 +262,17 @@ var oldDialog :PopupWindow?=null
                     mOutput.text = it
                 }
             }
-
+            lifecycleScope.launch {
+                calculationHandler.getTotalCurrency().collect {
+                    ensureActive()
+                    when (it.isNotEmpty()) {
+                        true -> conversionRateOutputLayout.visibility = View.VISIBLE
+                        else -> conversionRateOutputLayout.visibility = View.GONE
+                    }
+                    conversionRateOutput.text = it
+                    conversionRateOutput.visibility = View.VISIBLE
+                }
+            }
         }
     }
 
@@ -262,5 +292,10 @@ var oldDialog :PopupWindow?=null
         setOnClickListener {
             calculationHandler.removeValue()
         }
+    }
+
+    override fun onClickConvert(item: DropDownRateEntity, enteredValue: String) {
+        val currentAnswer = calculationHandler.getAnswer().value
+        calculatorViewModel.convertCurrency(currentAnswer, item) { }
     }
 }

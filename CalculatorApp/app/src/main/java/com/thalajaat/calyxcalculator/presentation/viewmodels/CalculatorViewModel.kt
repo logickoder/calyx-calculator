@@ -20,8 +20,8 @@ import java.util.Date
 import java.util.TimeZone
 
 class CalculatorViewModel(
-     val offlineRepository: ConversionDbRepoInterface,
-    private val calculatorHandler:CalculationHandlerInterface
+    val offlineRepository: ConversionDbRepoInterface,
+    private val calculatorHandler: CalculationHandlerInterface
 ) : ViewModel() {
 
 
@@ -34,7 +34,6 @@ class CalculatorViewModel(
         get() = calculatorHandler
 
     private val api = ApiHelper()
-
 
 
     fun addItems() = viewModelScope.launch {
@@ -53,15 +52,17 @@ class CalculatorViewModel(
 
     }
 
-    var loading = false
-    fun convertCurrency(entity: DropDownRateEntity,
-                        onDOne:()->Unit={},
-                        onError:(String)->Unit) = viewModelScope.launch {
+    private var loading = false
+    fun convertCurrency(
+        value : String,
+        entity: DropDownRateEntity,
+        onDOne: () -> Unit = {},
+        onError: (String) -> Unit
+    ) = viewModelScope.launch {
         Timber.tag("CURRENCY").v(entity.toString())
         if (loading.not()) {
             Timber.tag("NotLoading").d("Here")
-            val value = calculatorHandler.getAnswer().value
-            if ( value.equals("0") || value.isEmpty()) {
+            if (value.equals("0") || value.isEmpty()) {
                 Timber.tag("ContainsArithmeticSign").d(value.toString())
                 onError("Conversion failed, please enter a value")
             } else {
@@ -76,7 +77,7 @@ class CalculatorViewModel(
                             val timestamp = it.data?.timeStamp ?: ""
 
                             calculatorHandler.setAnswer(
-                                (value.toDouble()) * (ratte) ,
+                                value.toDouble() * (entity.rate),
                                 " ${entity.start}/${entity.end} (${ratte})"
                             )
                             offlineRepository.insetDropDOwnRates(
@@ -110,14 +111,16 @@ class CalculatorViewModel(
     }
 }
 
-class CalculorViewModelFactory(private val repository: ConversionDbRepoInterface,
-    private val handler:CalculationHandlerInterface) :
+class CalculorViewModelFactory(
+    private val repository: ConversionDbRepoInterface,
+    private val handler: CalculationHandlerInterface
+) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CalculatorViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return CalculatorViewModel(repository,handler) as T
+            return CalculatorViewModel(repository, handler) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

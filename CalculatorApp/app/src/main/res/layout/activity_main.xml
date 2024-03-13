@@ -1,375 +1,402 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="bottom"
-    android:gravity="bottom"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/_0"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/m_output"
+            app:layout_constraintEnd_toEndOf="@+id/m_output"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/m_output"
+            tools:text="2,000" />
+
+
+        <LinearLayout
+            android:id="@+id/conversion_rate_output_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:background="@drawable/currency_convert_background"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/m_output"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/input"
+            app:layout_constraintVertical_bias="0.29000002"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/conversion_rate_output"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:includeFontPadding="false"
+                android:padding="10dp"
+                android:textColor="?android:attr/textColor"
+                android:textSize="12sp"
+                android:visibility="gone"
+                app:cornerRadius="50dp"
+                tools:text="GBP/EUR (1.633)"
+                tools:visibility="visible" />
+
+        </LinearLayout>
 
     <TextView
         android:id="@+id/m_output"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="12dp"
-        android:text=""
-        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="40dp"
         android:fontFamily="@font/montserrat"
-        android:textAlignment="textEnd"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/input"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/montserrat"
+        android:gravity="end"
         android:text="@string/_0"
-        android:textAlignment="textEnd"
-        android:textSize="48sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:orientation="horizontal">
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/button_more"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/conversion_rate_output_layout"
+        tools:text="2,335.8" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:id="@+id/pinnedcoinslist"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="3dp"
-            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_1"
+            app:layout_constraintEnd_toStartOf="@+id/button_more"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/button_more"
             tools:itemCount="4"
             tools:listitem="@layout/single_pinned_currency_view" />
+
+    <LinearLayout
+        android:id="@+id/index_one"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/index_two"
+        app:layout_constraintEnd_toStartOf="@+id/index_two"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/index_two">
+
+        <ImageButton
+            android:id="@+id/button7"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/add"
+            android:fontFamily="@font/montserrat"
+            android:src="@drawable/ic_seven"
+            app:tint="?android:attr/textColor" />
+
+        <ImageButton
+            android:id="@+id/button4"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/add"
+            android:fontFamily="@font/montserrat"
+            android:src="@drawable/ic_four"
+            app:tint="?android:attr/textColor" />
+
+        <ImageButton
+            android:id="@+id/button1"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/add"
+            android:fontFamily="@font/montserrat"
+            android:src="@drawable/ic_one"
+            app:tint="?android:attr/textColor" />
+
+        <ImageButton
+            android:id="@+id/button0"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/add"
+            android:fontFamily="@font/montserrat"
+            android:src="@drawable/ic_zero"
+            app:tint="?android:attr/textColor" />
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/index_two"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/index_three"
+            app:layout_constraintEnd_toStartOf="@+id/index_three"
+            app:layout_constraintStart_toEndOf="@+id/index_one"
+            app:layout_constraintTop_toTopOf="@+id/index_three">
+
+            <ImageButton
+                android:id="@+id/button8"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/add"
+                android:fontFamily="@font/montserrat"
+                android:src="@drawable/ic_eight"
+                app:tint="?android:attr/textColor" />
+
+            <ImageButton
+                android:id="@+id/button5"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/add"
+                android:fontFamily="@font/montserrat"
+                android:src="@drawable/ic_five"
+                app:tint="?android:attr/textColor" />
+
+            <ImageButton
+                android:id="@+id/button2"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/add"
+                android:fontFamily="@font/montserrat"
+                android:src="@drawable/ic_two"
+                app:tint="?android:attr/textColor" />
+
+            <ImageButton
+                android:id="@+id/button_period"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/add"
+                android:fontFamily="@font/montserrat"
+                android:src="@drawable/ic_dot"
+                app:tint="?android:attr/textColor" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/index_three"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/index_four"
+            app:layout_constraintEnd_toStartOf="@+id/index_four"
+            app:layout_constraintStart_toEndOf="@+id/index_two"
+            app:layout_constraintTop_toTopOf="@+id/index_four">
+
+            <ImageButton
+                android:id="@+id/button9"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/add"
+                android:fontFamily="@font/montserrat"
+                android:src="@drawable/ic_nine"
+                app:tint="?android:attr/textColor" />
+
+            <ImageButton
+                android:id="@+id/button6"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/add"
+                android:fontFamily="@font/montserrat"
+                android:src="@drawable/ic_six"
+                app:tint="?android:attr/textColor" />
+
+
+            <ImageButton
+                android:id="@+id/button3"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/add"
+                android:fontFamily="@font/montserrat"
+                android:src="@drawable/ic_three"
+                app:tint="?android:attr/textColor" />
+
+            <ImageButton
+                android:id="@+id/button_ans"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/add"
+                android:fontFamily="@font/montserrat"
+                android:src="@drawable/ic_ans"
+                app:tint="?android:attr/textColor" />
+
+        </LinearLayout>
 
         <ImageButton
             android:id="@+id/button_more"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="end|center"
+            android:layout_weight="1"
+            android:contentDescription="@string/more_options"
             android:fontFamily="@font/montserrat"
             android:src="@drawable/ic_more"
-            android:contentDescription="@string/more_options"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
             app:tint="?android:attr/textColor" />
 
-    </LinearLayout>
-
-
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:orientation="horizontal">
-
-
-        <ImageButton
-            android:id="@+id/button7"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="3dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/montserrat"
-            android:src="@drawable/ic_seven"
-            android:contentDescription="@string/add"
-            app:tint="?android:attr/textColor"/>
-
-
-        <ImageButton
-            android:id="@+id/button8"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="3dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/montserrat"
-            android:src="@drawable/ic_eight"
-            android:contentDescription="@string/add"
-            app:tint="?android:attr/textColor"/>
-
-
-        <ImageButton
-            android:id="@+id/button9"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="3dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/montserrat"
-            android:src="@drawable/ic_nine"
-            android:contentDescription="@string/add"
-            app:tint="?android:attr/textColor"/>
-
+        android:id="@+id/index_four"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/index_five"
+        app:layout_constraintEnd_toStartOf="@+id/index_five"
+        app:layout_constraintStart_toEndOf="@+id/index_three"
+        app:layout_constraintTop_toBottomOf="@+id/button_more">
 
         <ImageButton
             android:id="@+id/button_division"
             style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="80dp"
+            android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_margin="3dp"
             android:layout_weight="1"
+            android:contentDescription="@string/add"
             android:fontFamily="@font/montserrat"
             android:src="@drawable/ic_divide"
-            android:contentDescription="@string/add"
-            app:tint="@color/operationOrange"/>
+            app:tint="@color/operationOrange" />
 
+        <ImageButton
+            android:id="@+id/button_multiplication"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/multiply"
+            android:fontFamily="@font/montserrat"
+            android:src="@drawable/ic_multiplication"
+            app:tint="@color/operationOrange" />
+
+
+        <ImageButton
+            android:id="@+id/button_subtraction"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/minus"
+            android:fontFamily="@font/montserrat"
+            android:src="@drawable/ic_subtraction"
+            app:tint="@color/operationOrange" />
+
+        <ImageButton
+            android:id="@+id/button_add"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/add"
+            android:fontFamily="@font/montserrat"
+            android:src="@drawable/ic_add"
+            app:tint="@color/operationOrange" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/index_five"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/index_four"
+        app:layout_constraintTop_toBottomOf="@+id/button_more"
+        app:layout_constraintVertical_bias="1.0">
 
         <ImageButton
             android:id="@+id/button_delete"
             style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="3dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/montserrat"
-            android:src="@drawable/ic_delete"
-            android:contentDescription="@string/add"
-            app:tint="@color/operationOrange"/>
-
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:orientation="horizontal">
-
-        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/button4"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/montserrat"
-                android:src="@drawable/ic_four"
-                android:contentDescription="@string/add"
-                app:tint="?android:attr/textColor"/>
-
-
-            <ImageButton
-                android:id="@+id/button5"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/montserrat"
-                android:src="@drawable/ic_five"
-                android:contentDescription="@string/add"
-                app:tint="?android:attr/textColor"/>
-
-
-            <ImageButton
-                android:id="@+id/button6"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/montserrat"
-                android:src="@drawable/ic_six"
-                android:contentDescription="@string/add"
-                app:tint="?android:attr/textColor"/>
-
-
-            <ImageButton
-                android:id="@+id/button_multiplication"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/montserrat"
-                android:src="@drawable/ic_multiplication"
-                android:contentDescription="@string/multiply"
-                app:tint="@color/operationOrange" />
-
-            <ImageButton
-                android:id="@+id/button_percentage"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/montserrat"
-                android:src="@drawable/ic_percentage"
-                android:contentDescription="@string/add"
-                app:tint="@color/operationOrange"/>
-
-
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:orientation="horizontal">
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
             android:layout_margin="3dp"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:contentDescription="@string/add"
+            android:fontFamily="@font/montserrat"
+            android:src="@drawable/ic_delete"
+            app:tint="@color/operationOrange" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/button1"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_margin="3dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat"
-                    android:src="@drawable/ic_one"
-                    android:contentDescription="@string/add"
-                    app:tint="?android:attr/textColor"/>
-
-                <ImageButton
-                    android:id="@+id/button2"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_margin="3dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat"
-                    android:src="@drawable/ic_two"
-                    android:contentDescription="@string/add"
-                    app:tint="?android:attr/textColor"/>
-
-                <ImageButton
-                    android:id="@+id/button3"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_margin="3dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat"
-                    android:src="@drawable/ic_three"
-                    android:contentDescription="@string/add"
-                    app:tint="?android:attr/textColor"/>
-
-
-                <ImageButton
-                    android:id="@+id/button_subtraction"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_margin="3dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat"
-                    android:src="@drawable/ic_subtraction"
-                    android:contentDescription="@string/minus"
-                    app:tint="@color/operationOrange"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/button0"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_margin="3dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat"
-                    android:src="@drawable/ic_zero"
-                    android:contentDescription="@string/add"
-                    app:tint="?android:attr/textColor"/>
-
-
-                <ImageButton
-                    android:id="@+id/button_period"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_margin="3dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat"
-                    android:src="@drawable/ic_dot"
-                    android:contentDescription="@string/add"
-                    app:tint="?android:attr/textColor"/>
-
-                <ImageButton
-                    android:id="@+id/button_ans"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_margin="3dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat"
-                    android:src="@drawable/ic_ans"
-                    android:contentDescription="@string/add"
-                    app:tint="?android:attr/textColor"/>
-
-                <ImageButton
-                    android:id="@+id/button_add"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_margin="3dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat"
-                    android:src="@drawable/ic_add"
-                    android:contentDescription="@string/add"
-                    app:tint="@color/operationOrange"/>
-
-            </LinearLayout>
-
-
-        </LinearLayout>
+        <ImageButton
+            android:id="@+id/button_percentage"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/add"
+            android:fontFamily="@font/montserrat"
+            android:src="@drawable/ic_percentage"
+            app:tint="@color/operationOrange" />
 
         <ImageButton
             android:id="@+id/button_equal_to"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_margin="3dp"
-            android:layout_weight="1"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.9"
             android:background="@drawable/equal_button"
             android:contentDescription="@string/add"
             android:fontFamily="@font/montserrat"
@@ -378,7 +405,14 @@
             android:paddingBottom="110dp"
             android:src="@drawable/ic_equal_to"
             app:tint="@color/white" />
-
     </LinearLayout>
 
-</LinearLayout>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="400dp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
