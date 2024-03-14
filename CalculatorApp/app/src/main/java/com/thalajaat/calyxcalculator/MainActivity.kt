@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
@@ -19,6 +20,7 @@ import com.thalajaat.calyxcalculator.data.datasources.local.room.ConversionDatab
 import com.thalajaat.calyxcalculator.data.datasources.local.room.ConversionDbRepo
 import com.thalajaat.calyxcalculator.data.datasources.local.room.DropDownRateEntity
 import com.thalajaat.calyxcalculator.databinding.ActivityMainBinding
+import com.thalajaat.calyxcalculator.databinding.MessageDialogViewBinding
 import com.thalajaat.calyxcalculator.databinding.PopupLayoutBinding
 import com.thalajaat.calyxcalculator.dormain.Arithemetics
 import com.thalajaat.calyxcalculator.dormain.CalculationHandler
@@ -61,11 +63,7 @@ class MainActivity : AppCompatActivity(), Convert {
                 if (calculatorViewModel.rateState.value.filter { it.isPinned }.size < 4) {
                     calculatorViewModel.pin(it)
                 } else {
-                    Toast.makeText(
-                        this,
-                        "You can’t pin more than 4 times, kindly unpin another to pin another selected currency.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showPinMessage()
                 }
             }
         }
@@ -260,15 +258,15 @@ class MainActivity : AppCompatActivity(), Convert {
                 }
             }
             lifecycleScope.launch {
-//                calculationHandler.getTotalCurrency().collect {
-//                    ensureActive()
-//                    when (it.isNotEmpty()) {
-//                        true -> conversionRateOutputLayout.visibility = View.VISIBLE
-//                        else -> conversionRateOutputLayout.visibility = View.GONE
-//                    }
-//                    conversionRateOutput.text = it
-//                    conversionRateOutput.visibility = View.VISIBLE
-//                }
+                calculationHandler.getTotalCurrency().collect {
+                    ensureActive()
+                    when (it.isNotEmpty()) {
+                        true -> conversionRateOutputLayout.visibility = View.VISIBLE
+                        else -> conversionRateOutputLayout.visibility = View.GONE
+                    }
+                    conversionRateOutput.text = it
+                    conversionRateOutput.visibility = View.VISIBLE
+                }
             }
         }
     }
@@ -294,5 +292,16 @@ class MainActivity : AppCompatActivity(), Convert {
     override fun onClickConvert(item: DropDownRateEntity, enteredValue: String) {
         val currentAnswer = calculationHandler.getAnswer().value
         calculatorViewModel.convertCurrency(currentAnswer, item) { }
+    }
+
+    private fun showPinMessage() {
+        val builder = AlertDialog.Builder(this, R.style.CustomAlertDialog).create()
+        val messageDialog = MessageDialogViewBinding.inflate(layoutInflater)
+        builder.setView(messageDialog.root)
+        messageDialog.dialogButtonOkay.setOnClickListener { builder.dismiss() }
+        builder.apply{
+            setCanceledOnTouchOutside(true)
+            show()
+        }
     }
 }

@@ -30,4 +30,8 @@
     <style name="Theme.CalyxCalculator" parent="Base.Theme.CalyxCalculator" />
     <style name="Theme.CalyxCalculatorWidget" parent="Base.Theme.CalyxCalculatorWidget" />
 
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/rounded_corner</item>
+    </style>
+
 </resources>
