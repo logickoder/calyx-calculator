@@ -227,8 +227,8 @@
                 android:layout_gravity="start"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:visibility="gone"
                 android:background="@drawable/currency_convert_background_widget"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/output"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -244,8 +244,7 @@
                     android:textColor="?android:attr/textColor"
                     android:textSize="12sp"
                     app:cornerRadius="50dp"
-                    tools:text="GBP/EUR (1.633)"
-                    tools:visibility="visible" />
+                    tools:text="GBP/EUR (1.633)" />
 
             </LinearLayout>
 
