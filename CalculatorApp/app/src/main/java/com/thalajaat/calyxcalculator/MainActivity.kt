@@ -11,7 +11,6 @@ import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -31,11 +30,9 @@ import com.thalajaat.calyxcalculator.presentation.viewmodels.CalculatorViewModel
 import com.thalajaat.calyxcalculator.presentation.viewmodels.CalculorViewModelFactory
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.ensureActive
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), Convert {
     val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
@@ -76,7 +73,7 @@ class MainActivity : AppCompatActivity(), Convert {
     private val pinnedadapter by lazy {
         PinnedConiRecyclerViewAdapter(this, this, calculationHandler) {
             val value = calculationHandler.getAnswer().value
-            calculatorViewModel.convertCurrency(value, it) {
+            calculatorViewModel.convertCurrency(value.substringBefore("  "), it) {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
@@ -263,15 +260,15 @@ class MainActivity : AppCompatActivity(), Convert {
                 }
             }
             lifecycleScope.launch {
-                calculationHandler.getTotalCurrency().collect {
-                    ensureActive()
-                    when (it.isNotEmpty()) {
-                        true -> conversionRateOutputLayout.visibility = View.VISIBLE
-                        else -> conversionRateOutputLayout.visibility = View.GONE
-                    }
-                    conversionRateOutput.text = it
-                    conversionRateOutput.visibility = View.VISIBLE
-                }
+//                calculationHandler.getTotalCurrency().collect {
+//                    ensureActive()
+//                    when (it.isNotEmpty()) {
+//                        true -> conversionRateOutputLayout.visibility = View.VISIBLE
+//                        else -> conversionRateOutputLayout.visibility = View.GONE
+//                    }
+//                    conversionRateOutput.text = it
+//                    conversionRateOutput.visibility = View.VISIBLE
+//                }
             }
         }
     }

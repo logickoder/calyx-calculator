@@ -15,10 +15,10 @@
         android:elevation="0dp"
         android:fontFamily="@font/montserrat_bold"
         android:includeFontPadding="false"
-        android:padding="10dp"
+        android:padding="5dp"
         android:text="@string/pinned_currency_sample"
         android:textColor="?android:attr/textColor"
-        android:textSize="10sp"
+        android:textSize="9sp"
         android:textStyle="bold"
         android:visibility="visible"
         app:cornerRadius="50dp" />
