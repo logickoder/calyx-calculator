@@ -235,11 +235,6 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
                 R.id.button_ans,
                 getPendingSelfIntent(context, answer)
             )
-//            remoteViews.setOnClickPendingIntent(
-//                R.id.conversion_rate_output,
-//                getPendingSelfIntent(context, conversionRate)
-//            )
-
             updateAppWidget(context, appWidgetManager, appWidgetId, remoteViews)
         }
 
@@ -387,8 +382,11 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
                     }
                 }
                 val text2 = calculationHandler.getAnswer().value
+
+
                 remoteViews.setTextViewText(R.id.input, text)
                 remoteViews.setTextViewText(R.id.output, text2)
+
                 for (appWidgetId in appWidgetIds) {
                     appWidgetManager.updateAppWidget(componentName, remoteViews)
                 }
@@ -426,6 +424,7 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
                     val text2 = calculationHandler.getAnswer().value
                     remoteViews.setTextViewText(R.id.input, text)
                     remoteViews.setTextViewText(R.id.output, text2)
+
                     for (appWidgetId in appWidgetIds) {
                         appWidgetManager.updateAppWidget(componentName, remoteViews)
                     }

@@ -19,7 +19,7 @@ class CalculationHandler :CalculationHandlerInterface {
 
             val result = DecimalFormat("0.##").format(d).toString()
             totalCurrencyConversion.value = suffix
-            answer.value = result + " " + suffix
+            answer.value = result
             // Show Result
     }
 

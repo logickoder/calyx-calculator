@@ -25,4 +25,8 @@
     <string name="search">Search</string>
     <string name="pin">pin</string>
     <string name="pinned">Pinned</string>
+    <string name="can_t_pin_more_than_4">Can’t pin more than 4</string>
+    <string name="not_allowed_image">Not Allowed Image</string>
+    <string name="dialog_message">You can’t pin more than 4 times, kindly unpin another to pin another selected currency.</string>
+    <string name="dialog_ok">ok</string>
 </resources>

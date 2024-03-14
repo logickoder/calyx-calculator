@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:theme="@style/Base.Theme.CalyxCalculatorWidget"
-    android:background="?android:attr/colorBackground"
+    android:background="@drawable/rounded_corner_widget"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:orientation="horizontal">
@@ -190,7 +190,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
@@ -198,10 +198,6 @@
         android:layout_marginEnd="8dp"
         android:background="@drawable/output_widget_background"
         android:orientation="vertical">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/input"
@@ -216,37 +212,7 @@
                 android:includeFontPadding="false"
                 android:text="0"
                 android:textAlignment="textEnd"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <LinearLayout
-                android:id="@+id/conversion_rate_output_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:background="@drawable/currency_convert_background_widget"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/output"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:visibility="visible">
-
-                <TextView
-                    android:id="@+id/conversion_rate_output"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat"
-                    android:includeFontPadding="false"
-                    android:padding="10dp"
-                    android:textColor="?android:attr/textColor"
-                    android:textSize="12sp"
-                    app:cornerRadius="50dp"
-                    tools:text="GBP/EUR (1.633)" />
-
-            </LinearLayout>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/output"
@@ -254,7 +220,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="15dp"
                 android:fontFamily="@font/montserrat_bold"
                 android:gravity="end"
                 android:includeFontPadding="false"
@@ -262,14 +228,9 @@
                 android:textAlignment="textEnd"
                 android:textSize="32sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/input"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/conversion_rate_output_layout"
-                app:layout_constraintTop_toBottomOf="@+id/input" />
+                android:layout_marginRight="10dp" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
+        </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -574,6 +535,7 @@
             android:background="@drawable/equal_button"
             android:fontFamily="@font/montserrat"
             android:src="@drawable/ic_equal_to"
+            android:paddingBottom="30dp"
             android:contentDescription="@string/add"
             app:tint="@color/white"/>
 
