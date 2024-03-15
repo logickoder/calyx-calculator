@@ -1,5 +1,6 @@
 package com.thalajaat.calyxcalculator.presentation.viewmodels
 
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -57,7 +58,8 @@ class CalculatorViewModel(
         value : String,
         entity: DropDownRateEntity,
         onDOne: () -> Unit = {},
-        onError: (String) -> Unit
+        onError: (String) -> Unit,
+        conversionError: (String) -> Unit,
     ) = viewModelScope.launch {
         Timber.tag("CURRENCY").v(entity.toString())
         if (loading.not()) {
@@ -97,6 +99,11 @@ class CalculatorViewModel(
                         } else {
                             onError("Conversion failed, Network Error")
 
+                        }
+                        if (it is ResponseState.Error){
+                            conversionError(it.message.toString())
+                        }
+                        if (it is ResponseState.Loading){
                         }
                     }
                 } else {

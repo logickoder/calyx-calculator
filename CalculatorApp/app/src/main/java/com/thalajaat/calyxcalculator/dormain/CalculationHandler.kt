@@ -1,30 +1,36 @@
 package com.thalajaat.calyxcalculator.dormain
 
+import com.thalajaat.calyxcalculator.utils.Utils.flatten
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import org.mariuszgromada.math.mxparser.Expression
 import java.text.DecimalFormat
 
 
-class CalculationHandler :CalculationHandlerInterface {
+class CalculationHandler : CalculationHandlerInterface {
 
-    private var expression = MutableStateFlow( "0")
-    private var answer = MutableStateFlow( "0")
+    private var expression = MutableStateFlow("0")
+    private var answer = MutableStateFlow("0")
     private var totalCurrencyConversion = MutableStateFlow("")
 
-    override fun getExpression():MutableStateFlow<String> = expression
+    override fun getExpression(): MutableStateFlow<String> = expression
     override fun getAnswer(): MutableStateFlow<String> = answer
     override fun getTotalCurrency(): MutableStateFlow<String> = totalCurrencyConversion
-    override fun setAnswer(d: Double,suffix:String) {
-
-            val result = DecimalFormat("0.##").format(d).toString()
-            totalCurrencyConversion.value = suffix
-            answer.value = result
-            // Show Result
+    override fun setAnswer(d: Double, suffix: String) {
+        val result = d.answerFormatter()
+        totalCurrencyConversion.value = suffix
+        answer.value = result
+        // Show Result
     }
 
     override fun clearOutput() {
         answer.value = ""
+    }
+
+    override fun clearInputForAll() {
+        answer.value = "0"
+        totalCurrencyConversion.value = ""
+        expression.value = "0"
     }
 
     override fun clearInput() {
@@ -32,21 +38,20 @@ class CalculationHandler :CalculationHandlerInterface {
         totalCurrencyConversion.value = ""
     }
 
-    override fun addValue(value: String){
+    override fun addValue(value: String) {
         expression.value += value
 
-            try {
-                val e = Expression(expression.value)
-                val result = e.calculate()
-                if (result.isNaN()) {
-                    return
-                } else {
-                    answer.value = DecimalFormat("0.##").format(result).toString()
-                }
+        try {
+            val e = Expression(expression.value.flatten())
+            val result = e.calculate()
+            if (result.isNaN()) {
+                return
+            } else {
+                answer.value = result.answerFormatter()
             }
-            catch (e:Exception){
-                e.printStackTrace()
-            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
     }
 
@@ -62,30 +67,38 @@ class CalculationHandler :CalculationHandlerInterface {
                 it.dropLast(1)
             }
             addValue("")
-        }
-        catch (e:Exception) {
-            expression.value ="0"
+        } catch (e: Exception) {
+            expression.value = "0"
         }
     }
 
-    override fun addArithemetic(value: Arithemetics){
+    override fun addArithemetic(value: Arithemetics) {
 
-        when(value){
+        when (value) {
             Arithemetics.ADD -> {
-                expression.value+="+"
+                expression.value += "+"
             }
+
             Arithemetics.SUBTRACT -> {
-                expression.value+="-"
+                expression.value += "-"
             }
+
             Arithemetics.MODULUS -> {
-                expression.value+="%"
-                addValue("*")
+                expression.value += "%"
+                val input = multiplicationArithmeticPattern.matches(expression.value)
+                if (input.not())
+                    addValue("*")
+                else
+                    addValue("")
+
             }
+
             Arithemetics.MULTIPLY -> {
-                expression.value+="*"
+                expression.value += "*"
             }
+
             Arithemetics.DIVIDE -> {
-                expression.value+="/"
+                expression.value += "/"
             }
         }
 
@@ -99,19 +112,16 @@ class CalculationHandler :CalculationHandlerInterface {
                 onError()
             } else {
                 expression.value = "0"
-                answer.value = DecimalFormat("0.######").format(result).toString()
+                answer.value = result.answerFormatter()
                 // Show Result
                 onCalculationResponse(answer.value)
             }
-        }
-        catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
             onError()
         }
     }
 }
-
-
 
 
 interface CalculationHandlerInterface {
@@ -121,18 +131,24 @@ interface CalculationHandlerInterface {
 
     fun addArithemetic(value: Arithemetics)
 
-    fun calculate(onError:()->Unit,onCalculationResponse:(String)->Unit)
+    fun calculate(onError: () -> Unit, onCalculationResponse: (String) -> Unit)
 
-    fun getExpression():MutableStateFlow<String>
-    fun getAnswer():MutableStateFlow<String>
-    fun setAnswer(d: Double,suffix:String)
-    fun getTotalCurrency() : MutableStateFlow<String>
+    fun getExpression(): MutableStateFlow<String>
+    fun getAnswer(): MutableStateFlow<String>
+    fun setAnswer(d: Double, suffix: String)
+    fun getTotalCurrency(): MutableStateFlow<String>
     fun clearOutput()
     fun clearInput()
+    fun clearInputForAll()
 }
 
+val multiplicationArithmeticPattern = Regex("\\d+[*+\\-/]\\d+%")
 
+fun Double.answerFormatter(): String {
+    val formatter = DecimalFormat("###,###,##0.##")
+    return formatter.format(this)
+}
 
-enum class Arithemetics{
+enum class Arithemetics {
     ADD, SUBTRACT, MULTIPLY, DIVIDE, MODULUS
 }

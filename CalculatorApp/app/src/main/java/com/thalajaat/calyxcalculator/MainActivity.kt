@@ -30,11 +30,13 @@ import com.thalajaat.calyxcalculator.presentation.uis.adapter.RatesAdapter
 import com.thalajaat.calyxcalculator.presentation.uis.widgets.xml.ExampleAppWidgetProvider
 import com.thalajaat.calyxcalculator.presentation.viewmodels.CalculatorViewModel
 import com.thalajaat.calyxcalculator.presentation.viewmodels.CalculorViewModelFactory
+import com.thalajaat.calyxcalculator.utils.Utils.flatten
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), Convert {
     val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
@@ -71,7 +73,9 @@ class MainActivity : AppCompatActivity(), Convert {
     private val pinnedadapter by lazy {
         PinnedConiRecyclerViewAdapter(this, this, calculationHandler) {
             val value = calculationHandler.getAnswer().value
-            calculatorViewModel.convertCurrency(value.substringBefore("  "), it) {
+            calculatorViewModel.convertCurrency(value.substringBefore("  "), it, onError = {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+            } ) {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
@@ -165,7 +169,7 @@ class MainActivity : AppCompatActivity(), Convert {
                 calculationHandler.calculate(onError = {
 
                 }) {
-                    calculationHandler.addValue(mOutput.text.split(" ").first().toString())
+                    calculationHandler.addValue(it.split(" ").first().toString())
                 }
             }
             buttonPercentage.setAritheieticListener(Arithemetics.MODULUS)
@@ -191,7 +195,7 @@ class MainActivity : AppCompatActivity(), Convert {
 
                         adapter.setItems(
                             calculatorViewModel.rateState.value
-                                .filter { it.end.contains(text.toString()) || it.start.contains(text.toString()) })
+                                .filter { it.end.contains(text.toString().uppercase()) || it.start.contains(text.toString().uppercase()) })
                     }
                     recyclerview.layoutManager =
                         LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
@@ -206,7 +210,6 @@ class MainActivity : AppCompatActivity(), Convert {
                             adapter.setItems(it)
                         }
                     }
-
 
                     // If you need to dismiss the popup when touched outside
                     isOutsideTouchable = true
@@ -247,7 +250,7 @@ class MainActivity : AppCompatActivity(), Convert {
                     }
                 }.collect {
                     ensureActive()
-                    input.text = it
+                    input.text = it.flatten()
                 }
 
             }
@@ -267,6 +270,10 @@ class MainActivity : AppCompatActivity(), Convert {
                     conversionRateOutput.text = it
                     conversionRateOutput.visibility = View.VISIBLE
                 }
+            }
+            buttonDelete.setOnLongClickListener {
+                calculationHandler.clearInputForAll()
+                true
             }
         }
     }
@@ -290,8 +297,10 @@ class MainActivity : AppCompatActivity(), Convert {
     }
 
     override fun onClickConvert(item: DropDownRateEntity, enteredValue: String) {
-        val currentAnswer = calculationHandler.getAnswer().value
-        calculatorViewModel.convertCurrency(currentAnswer, item) { }
+        val currentAnswer = calculationHandler.getAnswer().value.flatten()
+        calculatorViewModel.convertCurrency(currentAnswer, item, {}, onError = { }) {
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun showPinMessage() {
@@ -299,7 +308,7 @@ class MainActivity : AppCompatActivity(), Convert {
         val messageDialog = MessageDialogViewBinding.inflate(layoutInflater)
         builder.setView(messageDialog.root)
         messageDialog.dialogButtonOkay.setOnClickListener { builder.dismiss() }
-        builder.apply{
+        builder.apply {
             setCanceledOnTouchOutside(true)
             show()
         }

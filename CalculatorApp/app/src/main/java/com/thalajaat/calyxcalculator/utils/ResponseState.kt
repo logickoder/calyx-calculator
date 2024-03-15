@@ -17,6 +17,7 @@ import java.net.UnknownHostException
 sealed class ResponseState<T>(val data: T? = null, val message: String? = null) {
     class Success<T>(data: T?) : ResponseState<T>(data)
     class Error<T>(message: String?, data: T? = null) : ResponseState<T>(data, message)
+    class Loading<T>: ResponseState<T>(null, null)
 }
 
 fun processNetworkError(throwable: Throwable?): String? {
@@ -38,9 +39,7 @@ fun processNetworkError(throwable: Throwable?): String? {
                 }
             }
             is SocketTimeoutException -> message = "Network Error"
-            is UnknownHostException -> message = "Unknown Host Error"
             is MalformedURLException -> message = "Malformed URL"
-            is IOException -> message = "Network Error"
             else -> message = "Internal Error"
         }
         return message ?: "Internal Error"
