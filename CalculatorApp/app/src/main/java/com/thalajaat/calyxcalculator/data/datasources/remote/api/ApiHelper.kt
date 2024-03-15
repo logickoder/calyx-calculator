@@ -10,6 +10,7 @@ class ApiHelper {
         from: String,
         to: String,
     ) = flow {
+        emit(ResponseState.Loading())
         try {
             val currencyConversionRate =
                 currencyApiService.getCurrencyConversionRate(from, to)

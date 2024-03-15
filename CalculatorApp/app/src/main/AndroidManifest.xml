@@ -17,7 +17,7 @@
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="fullSensor"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,6 +40,9 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/calculator_widget_config" />
         </receiver>
+
+        <receiver android:name=".utils.DeleteAllLongClickListener" />
+
 
 
     </application>
