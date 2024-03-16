@@ -22,8 +22,8 @@ import com.thalajaat.calyxcalculator.data.datasources.local.room.DropDownRateEnt
 import com.thalajaat.calyxcalculator.databinding.ActivityMainBinding
 import com.thalajaat.calyxcalculator.databinding.MessageDialogViewBinding
 import com.thalajaat.calyxcalculator.databinding.PopupLayoutBinding
-import com.thalajaat.calyxcalculator.dormain.Arithemetics
-import com.thalajaat.calyxcalculator.dormain.CalculationHandler
+import com.thalajaat.calyxcalculator.domain.Arithemetics
+import com.thalajaat.calyxcalculator.domain.CalculationHandler
 import com.thalajaat.calyxcalculator.presentation.uis.adapter.Convert
 import com.thalajaat.calyxcalculator.presentation.uis.adapter.PinnedConiRecyclerViewAdapter
 import com.thalajaat.calyxcalculator.presentation.uis.adapter.RatesAdapter
@@ -36,7 +36,6 @@ import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), Convert {
     val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }

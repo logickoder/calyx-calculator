@@ -18,8 +18,8 @@ import com.thalajaat.calyxcalculator.R
 import com.thalajaat.calyxcalculator.data.datasources.local.room.ConversionDatabase
 import com.thalajaat.calyxcalculator.data.datasources.local.room.ConversionDbRepo
 import com.thalajaat.calyxcalculator.data.datasources.local.room.DropDownRateEntity
-import com.thalajaat.calyxcalculator.dormain.Arithemetics
-import com.thalajaat.calyxcalculator.dormain.CalculationHandler
+import com.thalajaat.calyxcalculator.domain.Arithemetics
+import com.thalajaat.calyxcalculator.domain.CalculationHandler
 import com.thalajaat.calyxcalculator.presentation.viewmodels.CalculatorViewModel
 import com.thalajaat.calyxcalculator.utils.DeleteAllLongClickListener
 import com.thalajaat.calyxcalculator.utils.Utils.CLEAR_ALL_CLICK_ACTION
