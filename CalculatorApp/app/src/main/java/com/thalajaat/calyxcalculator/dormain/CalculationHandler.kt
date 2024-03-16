@@ -86,10 +86,7 @@ class CalculationHandler : CalculationHandlerInterface {
             Arithemetics.MODULUS -> {
                 expression.value += "%"
                 val input = multiplicationArithmeticPattern.matches(expression.value)
-                if (input.not())
-                    addValue("*")
-                else
-                    addValue("")
+                if (input.not()) addValue("*") else addValue("")
 
             }
 

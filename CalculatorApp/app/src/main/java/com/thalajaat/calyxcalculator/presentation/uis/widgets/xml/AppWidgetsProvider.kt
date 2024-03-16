@@ -284,7 +284,7 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
         )
     }
 
-    fun getPendingSelfIntent(
+    private fun getPendingSelfIntent(
         context: Context?,
         action: String?,
         extra: String? = null

@@ -36,7 +36,6 @@ import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), Convert {
     val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
