@@ -16,14 +16,16 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
+import com.thalajaat.calyxcalculator.data.datasources.local.Coins
 import com.thalajaat.calyxcalculator.data.datasources.local.room.ConversionDatabase
 import com.thalajaat.calyxcalculator.data.datasources.local.room.ConversionDbRepo
 import com.thalajaat.calyxcalculator.data.datasources.local.room.DropDownRateEntity
 import com.thalajaat.calyxcalculator.databinding.ActivityMainBinding
 import com.thalajaat.calyxcalculator.databinding.MessageDialogViewBinding
 import com.thalajaat.calyxcalculator.databinding.PopupLayoutBinding
-import com.thalajaat.calyxcalculator.dormain.Arithemetics
-import com.thalajaat.calyxcalculator.dormain.CalculationHandler
+import com.thalajaat.calyxcalculator.domain.Arithemetics
+import com.thalajaat.calyxcalculator.domain.CalculationHandler
 import com.thalajaat.calyxcalculator.presentation.uis.adapter.Convert
 import com.thalajaat.calyxcalculator.presentation.uis.adapter.PinnedConiRecyclerViewAdapter
 import com.thalajaat.calyxcalculator.presentation.uis.adapter.RatesAdapter
@@ -74,7 +76,7 @@ class MainActivity : AppCompatActivity(), Convert {
             val value = calculationHandler.getAnswer().value
             calculatorViewModel.convertCurrency(value.substringBefore("  "), it, onError = {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-            } ) {
+            }) {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
@@ -193,8 +195,12 @@ class MainActivity : AppCompatActivity(), Convert {
                     val filter = popupView.search.doOnTextChanged { text, start, before, count ->
 
                         adapter.setItems(
-                            calculatorViewModel.rateState.value
-                                .filter { it.end.contains(text.toString().uppercase()) || it.start.contains(text.toString().uppercase()) })
+                            calculatorViewModel.rateState.value.sortedBy { it.start }
+                                .filter {
+                                    it.end.contains(
+                                        text.toString().uppercase()
+                                    ) || it.start.contains(text.toString().uppercase())
+                                })
                     }
                     recyclerview.layoutManager =
                         LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
@@ -206,7 +212,8 @@ class MainActivity : AppCompatActivity(), Convert {
                             if (it.isEmpty()) {
                                 calculatorViewModel.addItems()
                             }
-                            adapter.setItems(it)
+                            val coins = it
+                            adapter.setItems(coins)
                         }
                     }
 
@@ -297,9 +304,14 @@ class MainActivity : AppCompatActivity(), Convert {
 
     override fun onClickConvert(item: DropDownRateEntity, enteredValue: String) {
         val currentAnswer = calculationHandler.getAnswer().value.flatten()
-        calculatorViewModel.convertCurrency(currentAnswer, item, {}, onError = { }) {
-            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-        }
+        calculatorViewModel.convertCurrency(
+            currentAnswer,
+            item,
+            {},
+            onError = { },
+            conversionError = {error ->
+               Snackbar.make(binding.root, error, Snackbar.LENGTH_SHORT).show()
+            })
     }
 
     private fun showPinMessage() {

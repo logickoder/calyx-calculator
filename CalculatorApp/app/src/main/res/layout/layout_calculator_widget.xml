@@ -80,7 +80,7 @@
                     android:padding="10dp"
                     android:text="@string/pinned_currency_sample"
                     android:textColor="?android:attr/textColor"
-                    android:textSize="10sp"
+                    android:textSize="8sp"
                     android:textStyle="bold"
                     android:visibility="visible"
                     app:cornerRadius="50dp" />
@@ -108,7 +108,7 @@
                     android:padding="10dp"
                     android:text="@string/pinned_currency_sample"
                     android:textColor="?android:attr/textColor"
-                    android:textSize="10sp"
+                    android:textSize="8sp"
                     android:textStyle="bold"
                     android:visibility="visible"
                     app:cornerRadius="50dp" />
@@ -136,7 +136,7 @@
                     android:padding="10dp"
                     android:text="@string/pinned_currency_sample"
                     android:textColor="?android:attr/textColor"
-                    android:textSize="10sp"
+                    android:textSize="8sp"
                     android:textStyle="bold"
                     android:visibility="visible"
                     app:cornerRadius="50dp" />
@@ -164,7 +164,7 @@
                     android:padding="10dp"
                     android:text="@string/pinned_currency_sample"
                     android:textColor="?android:attr/textColor"
-                    android:textSize="10sp"
+                    android:textSize="8sp"
                     android:textStyle="bold"
                     android:visibility="visible"
                     app:cornerRadius="50dp" />

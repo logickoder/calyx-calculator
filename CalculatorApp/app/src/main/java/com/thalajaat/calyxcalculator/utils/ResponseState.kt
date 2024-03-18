@@ -40,6 +40,7 @@ fun processNetworkError(throwable: Throwable?): String? {
             }
             is SocketTimeoutException -> message = "Network Error"
             is MalformedURLException -> message = "Malformed URL"
+            is IOException -> message = "Check your network and try again"
             else -> message = "Internal Error"
         }
         return message ?: "Internal Error"

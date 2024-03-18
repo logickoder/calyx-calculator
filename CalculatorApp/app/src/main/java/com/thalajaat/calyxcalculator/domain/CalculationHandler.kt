@@ -1,9 +1,11 @@
-package com.thalajaat.calyxcalculator.dormain
+package com.thalajaat.calyxcalculator.domain
 
+import android.util.Log
 import com.thalajaat.calyxcalculator.utils.Utils.flatten
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import org.mariuszgromada.math.mxparser.Expression
+import timber.log.Timber
 import java.text.DecimalFormat
 
 
@@ -39,20 +41,35 @@ class CalculationHandler : CalculationHandlerInterface {
     }
 
     override fun addValue(value: String) {
+        if (value.equals(".")) {
+            if (expression.value.endsWithSpecialCharacter()) {
+                expression.value = expression.value.dropLast(1)
+            }
+        }
+
         expression.value += value
 
         try {
-            val e = Expression(expression.value.flatten())
+            val e = Expression(convertPercentageExpressions(insertMultiplicationAfterPercentage(expression.value.flatten())))
             val result = e.calculate()
-            if (result.isNaN()) {
-                return
-            } else {
+            if (!result.isNaN()) {
                 answer.value = result.answerFormatter()
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
 
+    private fun calculateExpression() {
+        try {
+            val e = Expression(expression.value.flatten())
+            val result = e.calculate()
+            if (!result.isNaN()) {
+                answer.value = result.answerFormatter()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun removeValue() {
@@ -74,6 +91,16 @@ class CalculationHandler : CalculationHandlerInterface {
 
     override fun addArithemetic(value: Arithemetics) {
 
+        if (expression.value.endsWithOperator()) {
+            expression.value = expression.value.dropLast(1)
+        }
+
+        if (value == Arithemetics.MODULUS) {
+            if (expression.value.endsWith("%")) {
+                return
+            }
+        }
+
         when (value) {
             Arithemetics.ADD -> {
                 expression.value += "+"
@@ -85,8 +112,20 @@ class CalculationHandler : CalculationHandlerInterface {
 
             Arithemetics.MODULUS -> {
                 expression.value += "%"
-                val input = multiplicationArithmeticPattern.matches(expression.value)
-                if (input.not()) addValue("*") else addValue("")
+                try {
+                    val e = Expression(convertPercentageExpressions(insertMultiplicationAfterPercentage(expression.value)))
+                    val result = e.calculate()
+                    if (result.isNaN()) {
+
+                    } else {
+                        answer.value = result.answerFormatter()
+                        // Show Result
+
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+
+                }
 
             }
 
@@ -100,10 +139,24 @@ class CalculationHandler : CalculationHandlerInterface {
         }
 
     }
+    private fun insertMultiplicationAfterPercentage(expression: String): String {
+        // Regular expression to find a number followed by '%' and another number
+        val regex = Regex("(\\d+)%\\s*(\\d+)")
+
+        // Replace matched patterns with the first number followed by '%*', then the second number
+        return expression.replace(regex) { matchResult ->
+            "${matchResult.groupValues[1]}%*${matchResult.groupValues[2]}"
+        }
+    }
+    private fun String.endsWithOperator(): Boolean {
+        // Regex pattern to check if the string ends with +, -, *, %, or /
+        val pattern = Regex("[+\\-*/]$")
+        return pattern.containsMatchIn(this)
+    }
 
     override fun calculate(onError: () -> Unit, onCalculationResponse: (String) -> Unit) {
         try {
-            val e = Expression(expression.value)
+            val e = Expression(convertPercentageExpressions(insertMultiplicationAfterPercentage(expression.value)))
             val result = e.calculate()
             if (result.isNaN()) {
                 onError()
@@ -117,6 +170,29 @@ class CalculationHandler : CalculationHandlerInterface {
             e.printStackTrace()
             onError()
         }
+    }
+
+    private fun convertPercentageExpressions(expression: String): String {
+        // Pattern to match expressions like 3+2%, 10-2%, etc.
+        val regex = Regex("(\\d+)([+\\-*/])(\\d+)%")
+
+        // Replace each match in the original string
+        val value = regex.replace(expression) { matchResult ->
+            // Extract the components of the match
+            val (number1, operator, number2) = matchResult.destructured
+
+            // Convert the matched expression into the desired format
+            when (operator) {
+                "+" -> "(${number2}%*${number1})+${number1}"
+                "-" -> "${number1}-(${number2}%*${number1})"
+                "*" -> "${number2}%*${number1}" // This case is already correct, but we include it for completeness
+                "/" -> "${number2}%/${number1}"
+                else -> matchResult.value // Should never happen, but included for completeness
+            }
+        }
+        Timber.tag("VALUE IS").d(value)
+        Timber.tag("Expression IS").d(expression)
+        return value;
     }
 }
 
@@ -139,11 +215,15 @@ interface CalculationHandlerInterface {
     fun clearInputForAll()
 }
 
-val multiplicationArithmeticPattern = Regex("\\d+[*+\\-/]\\d+%")
-
 fun Double.answerFormatter(): String {
     val formatter = DecimalFormat("###,###,##0.##")
     return formatter.format(this)
+}
+
+fun String.endsWithSpecialCharacter(): Boolean {
+    // Regex pattern to check if the last character is +, -, *, /, ., or %
+    val pattern = Regex("[+\\-*/.%]$")
+    return this.matches(pattern)
 }
 
 enum class Arithemetics {

@@ -3,15 +3,13 @@ package com.thalajaat.calyxcalculator.presentation.uis.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.thalajaat.calyxcalculator.R
 import com.thalajaat.calyxcalculator.data.datasources.local.room.DropDownRateEntity
 import com.thalajaat.calyxcalculator.databinding.SinglePinnedCurrencyViewBinding
-import com.thalajaat.calyxcalculator.dormain.Arithemetics
-import com.thalajaat.calyxcalculator.dormain.CalculationHandlerInterface
+import com.thalajaat.calyxcalculator.domain.CalculationHandlerInterface
 
 class PinnedConiRecyclerViewAdapter(
     private val context: Context,

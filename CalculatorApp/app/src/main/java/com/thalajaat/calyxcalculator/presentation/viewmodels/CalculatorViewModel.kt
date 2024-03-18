@@ -1,6 +1,5 @@
 package com.thalajaat.calyxcalculator.presentation.viewmodels
 
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -8,10 +7,11 @@ import com.thalajaat.calyxcalculator.data.datasources.local.Coins
 import com.thalajaat.calyxcalculator.data.datasources.local.room.ConversionDbRepoInterface
 import com.thalajaat.calyxcalculator.data.datasources.local.room.DropDownRateEntity
 import com.thalajaat.calyxcalculator.data.datasources.remote.api.ApiHelper
-import com.thalajaat.calyxcalculator.dormain.CalculationHandlerInterface
+import com.thalajaat.calyxcalculator.domain.CalculationHandlerInterface
 import com.thalajaat.calyxcalculator.utils.ResponseState
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -55,7 +55,7 @@ class CalculatorViewModel(
 
     private var loading = false
     fun convertCurrency(
-        value : String,
+        value: String,
         entity: DropDownRateEntity,
         onDOne: () -> Unit = {},
         onError: (String) -> Unit,
@@ -70,7 +70,7 @@ class CalculatorViewModel(
             } else {
                 val parseable = value.contains("(")
                 var newvalue = value
-                if(parseable){
+                if (parseable) {
                     newvalue = value.split(" ").first()
                 }
                 val isLongerThanAnHour = entity.timestamp.isOlderThanOneHourLegacy()
@@ -79,6 +79,10 @@ class CalculatorViewModel(
                     loading = true
                     api.getCurrencyConversionRate(entity.start, entity.end).collectLatest {
                         loading = false
+                        if (it is ResponseState.Error)
+                        {
+                            conversionError(it.message.toString())
+                        }
                         if (it is ResponseState.Success) {
                             val ratte = it.data?.conversionRate ?: 0.0
                             val timestamp = it.data?.timeStamp ?: ""
@@ -99,11 +103,6 @@ class CalculatorViewModel(
                         } else {
                             onError("Conversion failed, Network Error")
 
-                        }
-                        if (it is ResponseState.Error){
-                            conversionError(it.message.toString())
-                        }
-                        if (it is ResponseState.Loading){
                         }
                     }
                 } else {
