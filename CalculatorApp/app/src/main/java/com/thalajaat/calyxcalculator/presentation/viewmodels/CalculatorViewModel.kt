@@ -65,7 +65,7 @@ class CalculatorViewModel(
         if (loading.not()) {
             Timber.tag("NotLoading").d("Here")
             if (value.equals("0") || value.isEmpty()) {
-                Timber.tag("ContainsArithmeticSign").d(value.toString())
+                Timber.tag("ContainsArithmeticSign").d(value)
                 onError("Conversion failed, please enter a value")
             } else {
                 val parseable = value.contains("(")
@@ -107,7 +107,7 @@ class CalculatorViewModel(
                     }
                 } else {
                     calculatorHandler.setAnswer(
-                        newvalue.toDouble() * (entity.rate),
+                        newvalue.toDouble() * entity.rate,
                         " ${entity.start}/${entity.end} (${entity.rate})"
                     )
                     onDOne()

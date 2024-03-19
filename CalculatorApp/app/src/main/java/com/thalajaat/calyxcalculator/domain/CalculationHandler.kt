@@ -1,6 +1,5 @@
 package com.thalajaat.calyxcalculator.domain
 
-import android.util.Log
 import com.thalajaat.calyxcalculator.utils.Utils.flatten
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
