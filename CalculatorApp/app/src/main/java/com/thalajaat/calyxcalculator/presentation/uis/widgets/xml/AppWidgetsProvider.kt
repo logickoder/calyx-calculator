@@ -55,6 +55,7 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
     ) {
 
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
+        updateWidget(context)
     }
 
     override fun onUpdate(
@@ -72,6 +73,22 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
             getVM(context).offlineRepository.getDropDownRate2().filter { it.isPinned }.also {
                 Log.d("Value", it.toString())
                 withContext(Dispatchers.Main) {
+                    var text = calculationHandler.getExpression().value
+                        .replace("/", "÷")
+                        .replace("*", "×").replace("#", "%")
+                    text.also {
+                        if (it.length > 1) {
+                            if (it[1].toString() != ".") {
+                                text = it.trimStart("0".toCharArray().first())
+                            }
+                            it.flatten()
+                        } else {
+                            it.flatten()
+                        }
+                    }
+                    val text2 = calculationHandler.getAnswer().value
+                    remoteViews.setTextViewText(R.id.input, text)
+                    remoteViews.setTextViewText(R.id.output, text2)
                     val first = it.firstOrNull()
                     val second = it.getOrNull(1)
                     val three = it.getOrNull(2)
@@ -85,7 +102,7 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
                         )
                         remoteViews.setViewVisibility(R.id.button_first_conversion, View.VISIBLE)
                     } else {
-                        remoteViews.setViewVisibility(R.id.button_first_conversion, View.GONE)
+                       // remoteViews.setViewVisibility(R.id.button_first_conversion, View.GONE)
                         remoteViews.setViewVisibility(R.id.button_second_conversion, View.GONE)
                         remoteViews.setViewVisibility(R.id.button_third_conversion, View.GONE)
                         remoteViews.setViewVisibility(R.id.button_fourth_conversion, View.GONE)
@@ -123,6 +140,7 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
                     } else {
                         remoteViews.setViewVisibility(R.id.button_fourth_conversion, View.GONE)
                     }
+
                     appWidgetIds.forEach {
                         updateAppWidget(context, appWidgetManager, it, remoteViews)
                     }
@@ -564,5 +582,19 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
     override fun onEnabled(context: Context?) {
         super.onEnabled(context)
 
+    }
+
+    private fun updateWidget(context: Context){
+        val intent = Intent(context, ExampleAppWidgetProvider::class.java)
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE)
+        val ids: IntArray = AppWidgetManager.getInstance(context)
+            .getAppWidgetIds(
+                ComponentName(
+                    context,
+                    ExampleAppWidgetProvider::class.java
+                )
+            )
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+       context.sendBroadcast(intent)
     }
 }
