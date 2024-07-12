@@ -2,7 +2,6 @@ package com.thalajaat.calyxcalculator.presentation.uis.widgets.xml
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
-import android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
 import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
@@ -24,11 +23,7 @@ import com.thalajaat.calyxcalculator.presentation.viewmodels.CalculatorViewModel
 import com.thalajaat.calyxcalculator.utils.DeleteAllLongClickListener
 import com.thalajaat.calyxcalculator.utils.Utils.CLEAR_ALL_CLICK_ACTION
 import com.thalajaat.calyxcalculator.utils.Utils.flatten
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import timber.log.Timber
+import kotlinx.coroutines.*
 
 fun DropDownRateEntity.getName(): String {
     return "${start ?: ""}/${end ?: ""}"
@@ -37,236 +32,6 @@ fun DropDownRateEntity.getName(): String {
 class ExampleAppWidgetProvider : AppWidgetProvider() {
 
     private lateinit var notesRepository: ConversionDbRepo
-
-    companion object {
-        var list = emptyList<DropDownRateEntity>()
-        val calculationHandler = CalculationHandler()
-        fun getVM(context: Context) = CalculatorViewModel(
-            ConversionDbRepo(ConversionDatabase.getDatabase(context).converstionDao()),
-            calculationHandler
-        )
-    }
-
-    private fun updateAppWidget(
-        context: Context,
-        appWidgetManager: AppWidgetManager,
-        appWidgetId: Int,
-        remoteViews: RemoteViews
-    ) {
-
-        appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
-        updateWidget(context)
-    }
-
-    override fun onUpdate(
-        context: Context,
-        appWidgetManager: AppWidgetManager,
-        appWidgetIds: IntArray
-    ) {
-        // Perform this loop procedure for each widget that belongs to this
-        // provider.
-        val widgetManager = AppWidgetManager.getInstance(context.applicationContext)
-        val remoteViews = RemoteViews(context.packageName, R.layout.layout_calculator_widget)
-
-
-        CoroutineScope(Dispatchers.IO).launch {
-            getVM(context).offlineRepository.getDropDownRate2().filter { it.isPinned }.also {
-                Log.d("Value", it.toString())
-                withContext(Dispatchers.Main) {
-                    var text = calculationHandler.getExpression().value
-                        .replace("/", "÷")
-                        .replace("*", "×").replace("#", "%")
-                    text.also {
-                        if (it.length > 1) {
-                            if (it[1].toString() != ".") {
-                                text = it.trimStart("0".toCharArray().first())
-                            }
-                            it.flatten()
-                        } else {
-                            it.flatten()
-                        }
-                    }
-                    val text2 = calculationHandler.getAnswer().value
-                    remoteViews.setTextViewText(R.id.input, text)
-                    remoteViews.setTextViewText(R.id.output, text2)
-                    val first = it.firstOrNull()
-                    val second = it.getOrNull(1)
-                    val three = it.getOrNull(2)
-                    val four = it.getOrNull(3)
-                    Timber.tag("GOTTEN").v(it.map { it.start }.toString())
-                    if (first != null) {
-                        remoteViews.setTextViewText(R.id.first_rate, first.getName())
-                        remoteViews.setOnClickPendingIntent(
-                            R.id.button_first_conversion,
-                            getPendingSelfIntent(context, rate + 1, first.toJson())
-                        )
-                        remoteViews.setViewVisibility(R.id.button_first_conversion, View.VISIBLE)
-                    } else {
-                       // remoteViews.setViewVisibility(R.id.button_first_conversion, View.GONE)
-                        remoteViews.setViewVisibility(R.id.button_second_conversion, View.GONE)
-                        remoteViews.setViewVisibility(R.id.button_third_conversion, View.GONE)
-                        remoteViews.setViewVisibility(R.id.button_fourth_conversion, View.GONE)
-                    }
-                    if (second != null) {
-                        remoteViews.setTextViewText(R.id.second_rate, second.getName())
-                        remoteViews.setOnClickPendingIntent(
-                            R.id.button_second_conversion,
-                            getPendingSelfIntent(context, rate + 2, second.toJson())
-                        )
-                        remoteViews.setViewVisibility(R.id.button_second_conversion, View.VISIBLE)
-                    } else {
-                        remoteViews.setViewVisibility(R.id.button_second_conversion, View.GONE)
-                        remoteViews.setViewVisibility(R.id.button_third_conversion, View.GONE)
-                        remoteViews.setViewVisibility(R.id.button_fourth_conversion, View.GONE)
-                    }
-                    if (three != null) {
-                        remoteViews.setTextViewText(R.id.third_rate, three.getName())
-                        remoteViews.setOnClickPendingIntent(
-                            R.id.button_third_conversion,
-                            getPendingSelfIntent(context, rate + 3, three.toJson())
-                        )
-                        remoteViews.setViewVisibility(R.id.button_third_conversion, View.VISIBLE)
-                    } else {
-                        remoteViews.setViewVisibility(R.id.button_third_conversion, View.GONE)
-                        remoteViews.setViewVisibility(R.id.button_fourth_conversion, View.GONE)
-                    }
-                    if (four != null) {
-                        remoteViews.setTextViewText(R.id.fourth_rate, four.getName())
-                        remoteViews.setOnClickPendingIntent(
-                            R.id.button_fourth_conversion,
-                            getPendingSelfIntent(context, rate + 4, four.toJson())
-                        )
-                        remoteViews.setViewVisibility(R.id.button_fourth_conversion, View.VISIBLE)
-                    } else {
-                        remoteViews.setViewVisibility(R.id.button_fourth_conversion, View.GONE)
-                    }
-
-                    appWidgetIds.forEach {
-                        updateAppWidget(context, appWidgetManager, it, remoteViews)
-                    }
-
-                }
-            }
-        }
-        appWidgetIds.forEach { appWidgetId ->
-
-            val toastPendingIntent: PendingIntent = Intent(
-                context,
-                ExampleAppWidgetProvider::class.java
-            ).run {
-                // Set the action for the intent.
-                // When the user touches a particular view, it has the effect of
-                // broadcasting TOAST_ACTION.
-                action = "EDIT"
-                putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
-
-                PendingIntent.getBroadcast(
-                    context,
-                    0,
-                    this,
-                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
-                )
-            }
-
-            remoteViews.setOnClickPendingIntent(
-                R.id.button1,
-                getPendingSelfIntent(context, onebuttonclick)
-            )
-            remoteViews.setOnClickPendingIntent(
-                R.id.button_more,
-                getPendingSelfIntent(context, open)
-            )
-
-            remoteViews.setOnClickPendingIntent(
-                R.id.button2,
-                getPendingSelfIntent(context, twobuttonclick)
-            )
-            remoteViews.setOnClickPendingIntent(
-                R.id.button3,
-                getPendingSelfIntent(context, threebuttonclick)
-            )
-            remoteViews.setOnClickPendingIntent(
-                R.id.button4,
-                getPendingSelfIntent(context, fourbuttonclick)
-            )
-            remoteViews.setOnClickPendingIntent(
-                R.id.button5,
-                getPendingSelfIntent(context, fivebuttonclick)
-            )
-            remoteViews.setOnClickPendingIntent(
-                R.id.button6,
-                getPendingSelfIntent(context, sixbuttonclick)
-            )
-            remoteViews.setOnClickPendingIntent(
-                R.id.button7,
-                getPendingSelfIntent(context, sevenbuttonclick)
-            )
-            remoteViews.setOnClickPendingIntent(
-                R.id.button8,
-                getPendingSelfIntent(context, eightbuttonclick)
-            )
-
-            remoteViews.setOnClickPendingIntent(
-                R.id.button9,
-                getPendingSelfIntent(context, ninebuttonclick)
-            )
-            remoteViews.setOnClickPendingIntent(
-                R.id.button0,
-                getPendingSelfIntent(context, zerobuttonclick)
-            )
-            remoteViews.setOnClickPendingIntent(
-                R.id.button_period,
-                getPendingSelfIntent(context, dot)
-            )
-            remoteViews.setOnClickPendingIntent(
-                R.id.button_add,
-                getPendingSelfIntent(context, addbuttonclick)
-            )
-            remoteViews.setOnClickPendingIntent(
-                R.id.button_subtraction,
-                getPendingSelfIntent(context, subtractbuttonclick)
-            )
-            remoteViews.setOnClickPendingIntent(
-                R.id.button_division,
-                getPendingSelfIntent(context, dividebuttonclick)
-            )
-
-            remoteViews.setOnClickPendingIntent(
-                R.id.button_multiplication,
-                getPendingSelfIntent(context, multiplybuttonclick)
-            )
-
-
-            remoteViews.setOnClickPendingIntent(
-                R.id.button_percentage,
-                getPendingSelfIntent(context, modulusbuttonclick)
-            )
-
-            remoteViews.setOnClickPendingIntent(
-                R.id.button_equal_to,
-                getPendingSelfIntent(context, submit)
-            )
-
-            remoteViews.setOnClickPendingIntent(
-                R.id.button_delete,
-                getPendingSelfIntent(context, clear)
-            )
-
-//            remoteViews.setOnClickPendingIntent(
-//                R.id.button_delete,
-//                getLongClickPendingIntent(context, appWidgetId)
-//            )
-
-            remoteViews.setOnClickPendingIntent(
-                R.id.button_ans,
-                getPendingSelfIntent(context, answer)
-            )
-            updateAppWidget(context, appWidgetManager, appWidgetId, remoteViews)
-        }
-
-    }
-
     val onebuttonclick = "1"
     val twobuttonclick = "2"
     val threebuttonclick = "3"
@@ -289,15 +54,209 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
     val submit = "submit"
     val EXTRA = "EXTRA"
     val answer = "answer"
+    companion object {
+        var list = emptyList<DropDownRateEntity>()
+        val calculationHandler = CalculationHandler()
+        fun getVM(context: Context) = CalculatorViewModel(
+            ConversionDbRepo(ConversionDatabase.getDatabase(context).converstionDao()),
+            calculationHandler
+        )
+    }
 
-    private fun getLongClickPendingIntent(context: Context, appWidgetId: Int): PendingIntent {
-        val intent = Intent(context, DeleteAllLongClickListener::class.java)
-        intent.action = CLEAR_ALL_CLICK_ACTION
-        return PendingIntent.getBroadcast(
-            context,
-            appWidgetId,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+    private var coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+
+    private fun updateAppWidget(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetId: Int,
+        remoteViews: RemoteViews
+    ) {
+        appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
+    }
+
+    override fun onUpdate(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetIds: IntArray
+    ) {
+        // Perform this loop procedure for each widget that belongs to this provider.
+        val widgetManager = AppWidgetManager.getInstance(context.applicationContext)
+        val remoteViews = RemoteViews(context.packageName, R.layout.layout_calculator_widget)
+
+        Log.d("Value", "onUpdate: called")
+
+        coroutineScope.launch {
+            try {
+                val rates = getVM(context).offlineRepository.getDropDownRate2().filter { it.isPinned }
+                Log.d("Value", rates.toString())
+                withContext(Dispatchers.Main) {
+                    var text = calculationHandler.getExpression().value
+                        .replace("/", "÷")
+                        .replace("*", "×")
+                        .replace("#", "%")
+                    text = if (text.length > 1 && text[1].toString() != ".") {
+                        text.trimStart('0')
+                    } else {
+                        text
+                    }
+                    val text2 = calculationHandler.getAnswer().value
+                    remoteViews.setTextViewText(R.id.input, text)
+                    remoteViews.setTextViewText(R.id.output, text2)
+
+                    // Update conversion rates
+                    updateConversionRates(remoteViews, context, rates)
+
+                    appWidgetIds.forEach {
+                        updateAppWidget(context, appWidgetManager, it, remoteViews)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("AppWidgetProvider", "Error updating widget", e)
+            }
+        }
+
+        setPendingIntents(context, remoteViews)
+
+        appWidgetIds.forEach { appWidgetId ->
+            updateAppWidget(context, appWidgetManager, appWidgetId, remoteViews)
+        }
+    }
+
+    private fun updateConversionRates(
+        remoteViews: RemoteViews,
+        context: Context,
+        rates: List<DropDownRateEntity>
+    ) {
+        val first = rates.getOrNull(0)
+        val second = rates.getOrNull(1)
+        val third = rates.getOrNull(2)
+        val fourth = rates.getOrNull(3)
+
+        if (first != null) {
+            remoteViews.setTextViewText(R.id.first_rate, first.getName())
+            remoteViews.setOnClickPendingIntent(
+                R.id.button_first_conversion,
+                getPendingSelfIntent(context, rate + 1, first.toJson())
+            )
+            remoteViews.setViewVisibility(R.id.button_first_conversion, View.VISIBLE)
+        } else {
+            remoteViews.setViewVisibility(R.id.button_first_conversion, View.GONE)
+        }
+
+        if (second != null) {
+            remoteViews.setTextViewText(R.id.second_rate, second.getName())
+            remoteViews.setOnClickPendingIntent(
+                R.id.button_second_conversion,
+                getPendingSelfIntent(context, rate + 2, second.toJson())
+            )
+            remoteViews.setViewVisibility(R.id.button_second_conversion, View.VISIBLE)
+        } else {
+            remoteViews.setViewVisibility(R.id.button_second_conversion, View.GONE)
+        }
+
+        if (third != null) {
+            remoteViews.setTextViewText(R.id.third_rate, third.getName())
+            remoteViews.setOnClickPendingIntent(
+                R.id.button_third_conversion,
+                getPendingSelfIntent(context, rate + 3, third.toJson())
+            )
+            remoteViews.setViewVisibility(R.id.button_third_conversion, View.VISIBLE)
+        } else {
+            remoteViews.setViewVisibility(R.id.button_third_conversion, View.GONE)
+        }
+
+        if (fourth != null) {
+            remoteViews.setTextViewText(R.id.fourth_rate, fourth.getName())
+            remoteViews.setOnClickPendingIntent(
+                R.id.button_fourth_conversion,
+                getPendingSelfIntent(context, rate + 4, fourth.toJson())
+            )
+            remoteViews.setViewVisibility(R.id.button_fourth_conversion, View.VISIBLE)
+        } else {
+            remoteViews.setViewVisibility(R.id.button_fourth_conversion, View.GONE)
+        }
+    }
+
+    private fun setPendingIntents(context: Context, remoteViews: RemoteViews) {
+        remoteViews.setOnClickPendingIntent(
+            R.id.button1,
+            getPendingSelfIntent(context, onebuttonclick)
+        )
+        remoteViews.setOnClickPendingIntent(
+            R.id.button_more,
+            getPendingSelfIntent(context, open)
+        )
+        remoteViews.setOnClickPendingIntent(
+            R.id.button2,
+            getPendingSelfIntent(context, twobuttonclick)
+        )
+        remoteViews.setOnClickPendingIntent(
+            R.id.button3,
+            getPendingSelfIntent(context, threebuttonclick)
+        )
+        remoteViews.setOnClickPendingIntent(
+            R.id.button4,
+            getPendingSelfIntent(context, fourbuttonclick)
+        )
+        remoteViews.setOnClickPendingIntent(
+            R.id.button5,
+            getPendingSelfIntent(context, fivebuttonclick)
+        )
+        remoteViews.setOnClickPendingIntent(
+            R.id.button6,
+            getPendingSelfIntent(context, sixbuttonclick)
+        )
+        remoteViews.setOnClickPendingIntent(
+            R.id.button7,
+            getPendingSelfIntent(context, sevenbuttonclick)
+        )
+        remoteViews.setOnClickPendingIntent(
+            R.id.button8,
+            getPendingSelfIntent(context, eightbuttonclick)
+        )
+        remoteViews.setOnClickPendingIntent(
+            R.id.button9,
+            getPendingSelfIntent(context, ninebuttonclick)
+        )
+        remoteViews.setOnClickPendingIntent(
+            R.id.button0,
+            getPendingSelfIntent(context, zerobuttonclick)
+        )
+        remoteViews.setOnClickPendingIntent(
+            R.id.button_period,
+            getPendingSelfIntent(context, dot)
+        )
+        remoteViews.setOnClickPendingIntent(
+            R.id.button_add,
+            getPendingSelfIntent(context, addbuttonclick)
+        )
+        remoteViews.setOnClickPendingIntent(
+            R.id.button_subtraction,
+            getPendingSelfIntent(context, subtractbuttonclick)
+        )
+        remoteViews.setOnClickPendingIntent(
+            R.id.button_division,
+            getPendingSelfIntent(context, dividebuttonclick)
+        )
+        remoteViews.setOnClickPendingIntent(
+            R.id.button_multiplication,
+            getPendingSelfIntent(context, multiplybuttonclick)
+        )
+        remoteViews.setOnClickPendingIntent(
+            R.id.button_percentage,
+            getPendingSelfIntent(context, modulusbuttonclick)
+        )
+        remoteViews.setOnClickPendingIntent(
+            R.id.button_equal_to,
+            getPendingSelfIntent(context, submit)
+        )
+        remoteViews.setOnClickPendingIntent(
+            R.id.button_delete,
+            getPendingSelfIntent(context, clear)
+        )
+        remoteViews.setOnClickPendingIntent(
+            R.id.button_ans,
+            getPendingSelfIntent(context, answer)
         )
     }
 
@@ -306,295 +265,253 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
         action: String?,
         extra: String? = null
     ): PendingIntent? {
-        val intent = Intent(context, ExampleAppWidgetProvider::class.java)
-        intent.putExtra(EXTRA, extra)
-        intent.setAction(action)
+        val intent = Intent(context, ExampleAppWidgetProvider::class.java).apply {
+            putExtra(EXTRA, extra)
+            this.action = action
+        }
         return PendingIntent.getBroadcast(
             context,
             0,
             intent,
-            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
         )
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
+        super.onReceive(context, intent)
         val action = intent?.action
-        Timber.tag("ACTION").v(action)
-        Timber.tag("ID").v(intent?.getIntExtra("ID", 0).toString())
-        Timber.tag("IDS")
-            .v(intent?.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS).toString())
+        Log.d("AppWidgetProvider", "onReceive: $action")
         val entity = intent?.getStringExtra(EXTRA)
         val remoteViews = RemoteViews(context!!.packageName, R.layout.layout_calculator_widget)
         val componentName = ComponentName(context, ExampleAppWidgetProvider::class.java)
-        when (action) {
-
-            rate + 1, rate + 2, rate + 3, rate + 4 -> {
-                val appWidgetManager = AppWidgetManager.getInstance(context)
-                val appWidgetIds = appWidgetManager.getAppWidgetIds(
-                    ComponentName(
-                        context!!,
-                        ExampleAppWidgetProvider::class.java
-                    )
-                )
-                val entity = Gson().fromJson(entity, DropDownRateEntity::class.java)
-                if (entity != null) {
-                    val currentValue = calculationHandler.getAnswer().value.flatten()
-                    getVM(context).convertCurrency(currentValue, entity, onDOne = {
-                        var text = calculationHandler.getExpression().value
-                            .replace("/", "÷")
-                            .replace("*", "×").replace("#", "%")
-                        text.also {
-                            if (it.length > 1) {
-                                if (it[1].toString() != ".") {
-                                    text = it.trimStart("0".toCharArray().first())
-                                }
-                                it.flatten()
-                            } else {
-                                it.flatten()
-                            }
-                        }
-                        val text2 = calculationHandler.getAnswer().value
-                        remoteViews.setTextViewText(R.id.input, text)
-                        remoteViews.setTextViewText(R.id.output, text2)
-                        val currencyRate = calculationHandler.getTotalCurrency().value
-                        remoteViews.setTextViewText(
-                            R.id.conversion_rate_output_widget,
-                            currencyRate
-                        )
-                        remoteViews.setViewVisibility(
-                            R.id.conversion_rate_output_widget,
-                            View.VISIBLE
-                        )
-                        for (appWidgetId in appWidgetIds) {
-                            appWidgetManager.updateAppWidget(componentName, remoteViews)
-                        }
-                    }, onError = {
-                        Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-                    }, conversionError = { error ->
-                        Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
-                    })
-                }
-
-            }
-
-            clear -> {
-                val appWidgetManager = AppWidgetManager.getInstance(context)
-                val appWidgetIds = appWidgetManager.getAppWidgetIds(
-                    ComponentName(
-                        context!!,
-                        ExampleAppWidgetProvider::class.java
-                    )
-                )
-                calculationHandler.removeValue()
-                var text = calculationHandler.getExpression().value
-                    .replace("/", "÷")
-                    .replace("*", "×").replace("#", "%")
-                text.also {
-                    if (it.length > 1) {
-                        if (it[1].toString() != ".") {
-                            text = it.trimStart("0".toCharArray().first())
-                        }
-                        it
-                    } else {
-                        it.flatten()
-                    }
-                }
-                val text2 = calculationHandler.getAnswer().value
-                remoteViews.setTextViewText(R.id.input, text)
-                remoteViews.setTextViewText(R.id.output, text2)
-                remoteViews.setViewVisibility(R.id.conversion_rate_output_widget, View.GONE)
-
-                for (appWidgetId in appWidgetIds) {
-                    appWidgetManager.updateAppWidget(componentName, remoteViews)
-                }
-            }
-
-            answer -> {
-                val appWidgetManager = AppWidgetManager.getInstance(context)
-                val appWidgetIds = appWidgetManager.getAppWidgetIds(
-                    ComponentName(
-                        context!!,
-                        ExampleAppWidgetProvider::class.java
-                    )
-                )
-
-                if (calculationHandler.getAnswer().value.isNotEmpty()){
-                    calculationHandler.clearInput()
-                    calculationHandler.addValue(
-                        calculationHandler.getAnswer().value.split(" ").first().toString()
-                    )
-                }
-
-                var text = calculationHandler.getExpression().value
-                    .replace("/", "÷")
-                    .replace("*", "×").replace("#", "%")
-                text.also {
-                    if (it.length > 1) {
-                        if (it[1].toString() != ".") {
-                            text = it.trimStart("0".toCharArray().first())
-                        }
-                        it
-                    } else {
-                        it
-                    }
-                }
-                val text2 = calculationHandler.getAnswer().value
-                val currencyRate = calculationHandler.getTotalCurrency().value
-                remoteViews.setTextViewText(R.id.conversion_rate_output_widget, currencyRate)
-                remoteViews.setViewVisibility(R.id.conversion_rate_output_widget, View.GONE)
-                remoteViews.setTextViewText(R.id.input, text.flatten())
-                remoteViews.setTextViewText(R.id.output, text2)
-
-                for (appWidgetId in appWidgetIds) {
-                    appWidgetManager.updateAppWidget(componentName, remoteViews)
-                }
-            }
-
-            open -> {
-                val open = Intent(context, MainActivity::class.java)
-                open.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                open.putExtra("mode", "add")
-                context?.startActivity(open)
-            }
-
-            submit -> {
-                val appWidgetManager = AppWidgetManager.getInstance(context)
-                val appWidgetIds = appWidgetManager.getAppWidgetIds(
-                    ComponentName(
-                        context,
-                        ExampleAppWidgetProvider::class.java
-                    )
-                )
-
-                calculationHandler.calculate({
-
-                }) {
-                    calculationHandler.clearInput()
-                    calculationHandler.addValue(
-                        it.split(" ").first().toString()
-                    )
-                    var text = calculationHandler.getExpression().value
-                        .replace("/", "÷")
-                        .replace("*", "×").replace("#", "%")
-                    text.also {
-                        if (it.length > 1) {
-                            if (it[1].toString() != ".") {
-                                text = it.trimStart("0".toCharArray().first())
-                            }
-                            it
-                        } else {
-                            it
-                        }
-                    }
-
-                    val currencyRate = calculationHandler.getTotalCurrency().value
-                    val text2 = calculationHandler.getAnswer().value
-                    remoteViews.setTextViewText(R.id.conversion_rate_output_widget, currencyRate)
-                    remoteViews.setViewVisibility(R.id.conversion_rate_output_widget, View.GONE)
-                    remoteViews.setTextViewText(R.id.input, text.flatten())
-                    remoteViews.setTextViewText(R.id.output, text2)
-
-                    for (appWidgetId in appWidgetIds) {
-                        appWidgetManager.updateAppWidget(componentName, remoteViews)
-                    }
-
-                }
-            }
-
-            addbuttonclick, subtractbuttonclick, dividebuttonclick, multiplybuttonclick, modulusbuttonclick -> {
-                val appWidgetManager = AppWidgetManager.getInstance(context)
-                val appWidgetIds = appWidgetManager.getAppWidgetIds(
-                    ComponentName(
-                        context!!,
-                        ExampleAppWidgetProvider::class.java
-                    )
-                )
-                calculationHandler.addArithemetic(Arithemetics.valueOf(action))
-                var text = calculationHandler.getExpression().value
-                    .replace("/", "÷")
-                    .replace("*", "×").replace("#", "%")
-                text.also {
-                    if (it.length > 1) {
-                        if (it[1].toString() != ".") {
-                            text = it.trimStart("0".toCharArray().first())
-                        }
-                        it
-                    } else {
-                        it
-                    }
-                }
-                val text2 = calculationHandler.getAnswer().value
-                remoteViews.setTextViewText(R.id.input, text.flatten())
-                remoteViews.setTextViewText(R.id.output, text2)
-                for (appWidgetId in appWidgetIds) {
-                    appWidgetManager.updateAppWidget(componentName, remoteViews)
-                }
-            }
-
-            onebuttonclick, dot, twobuttonclick, threebuttonclick, fourbuttonclick, fivebuttonclick, sixbuttonclick, sevenbuttonclick, eightbuttonclick, ninebuttonclick, zerobuttonclick -> {
-                val appWidgetManager = AppWidgetManager.getInstance(context)
-                val appWidgetIds = appWidgetManager.getAppWidgetIds(
-                    ComponentName(
-                        context!!,
-                        ExampleAppWidgetProvider::class.java
-                    )
-                )
-                calculationHandler.addValue(action)
-                var text = calculationHandler.getExpression().value
-                    .replace("/", "÷")
-                    .replace("*", "×").replace("#", "%")
-                text.also {
-                    if (it.length > 1) {
-                        if (it[1].toString() != ".") {
-                            text = it.trimStart("0".toCharArray().first())
-                        }
-                        it
-                    } else {
-                        it
-                    }
-                }
-                val text2 = calculationHandler.getAnswer().value
-                remoteViews.setTextViewText(R.id.input, text.flatten())
-                remoteViews.setTextViewText(R.id.output, text2)
-                for (appWidgetId in appWidgetIds) {
-                    appWidgetManager.updateAppWidget(componentName, remoteViews)
-                }
-            }
-
-
-            ACTION_APPWIDGET_UPDATE -> {
-
-                val ids = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS)
-                context?.let {
-                    ids?.let { it1 ->
-                        onUpdate(
-                            it, AppWidgetManager.getInstance(context),
-                            it1
-                        )
-                    }
-                }
-            }
-        }
-
-        super.onReceive(context, intent)
-    }
-
-    override fun onEnabled(context: Context?) {
-        super.onEnabled(context)
-
-    }
-
-    private fun updateWidget(context: Context){
-        val intent = Intent(context, ExampleAppWidgetProvider::class.java)
-        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE)
-        val ids: IntArray = AppWidgetManager.getInstance(context)
+        val ids: IntArray = AppWidgetManager.getInstance(context.applicationContext)
             .getAppWidgetIds(
                 ComponentName(
                     context,
                     ExampleAppWidgetProvider::class.java
                 )
             )
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
-       context.sendBroadcast(intent)
+        onUpdate(context, AppWidgetManager.getInstance(context), ids)
+
+        when (action) {
+            AppWidgetManager.ACTION_APPWIDGET_OPTIONS_CHANGED -> {
+                Log.d("AppWidgetProvider", "onReceive: ACTION_APPWIDGET_OPTIONS_CHANGED called")
+            }
+            rate + 1, rate + 2, rate + 3, rate + 4 -> {
+                handleRateConversion(context, entity, remoteViews, componentName)
+            }
+            clear -> {
+                handleClearAction(context, remoteViews, componentName)
+            }
+            answer -> {
+                handleAnswerAction(context, remoteViews, componentName)
+            }
+            open -> {
+                val openIntent = Intent(context, MainActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    putExtra("mode", "add")
+                }
+                context.startActivity(openIntent)
+            }
+            submit -> {
+                handleSubmitAction(context, remoteViews, componentName)
+            }
+            in listOf(addbuttonclick, subtractbuttonclick, dividebuttonclick, multiplybuttonclick, modulusbuttonclick) -> {
+                handleArithmeticAction(context, action, remoteViews, componentName)
+            }
+            in listOf(onebuttonclick, dot, twobuttonclick, threebuttonclick, fourbuttonclick, fivebuttonclick, sixbuttonclick, sevenbuttonclick, eightbuttonclick, ninebuttonclick, zerobuttonclick) -> {
+                handleNumberAction(context, action, remoteViews, componentName)
+            }
+            AppWidgetManager.ACTION_APPWIDGET_UPDATE -> {
+                val ids = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS)
+                context?.let {
+                    ids?.let { it1 ->
+                        onUpdate(it, AppWidgetManager.getInstance(context), it1)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun handleRateConversion(context: Context?, entity: String?, remoteViews: RemoteViews, componentName: ComponentName) {
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        val appWidgetIds = appWidgetManager.getAppWidgetIds(componentName)
+        val entityObj = Gson().fromJson(entity, DropDownRateEntity::class.java)
+        entityObj?.let {
+            val currentValue = calculationHandler.getAnswer().value.flatten()
+            getVM(context!!).convertCurrency(currentValue, it, onDOne = {
+                updateViewsAfterConversion(context, remoteViews, componentName, appWidgetIds)
+            }, onError = {
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            }, conversionError = {
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            })
+        }
+    }
+
+    private fun handleClearAction(context: Context?, remoteViews: RemoteViews, componentName: ComponentName) {
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        val appWidgetIds = appWidgetManager.getAppWidgetIds(componentName)
+        calculationHandler.removeValue()
+        updateViewsAfterClear(context, remoteViews, componentName, appWidgetIds)
+    }
+
+    private fun handleAnswerAction(context: Context?, remoteViews: RemoteViews, componentName: ComponentName) {
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        val appWidgetIds = appWidgetManager.getAppWidgetIds(componentName)
+        if (calculationHandler.getAnswer().value.isNotEmpty()) {
+            calculationHandler.clearInput()
+            calculationHandler.addValue(calculationHandler.getAnswer().value.split(" ").first().toString())
+        }
+        updateViewsAfterAnswer(context, remoteViews, componentName, appWidgetIds)
+    }
+
+    private fun handleSubmitAction(context: Context?, remoteViews: RemoteViews, componentName: ComponentName) {
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        val appWidgetIds = appWidgetManager.getAppWidgetIds(componentName)
+        calculationHandler.calculate({
+            // Optional success handler
+        }) {
+            calculationHandler.clearInput()
+            calculationHandler.addValue(it.split(" ").first().toString())
+            updateViewsAfterSubmit(context, remoteViews, componentName, appWidgetIds)
+        }
+    }
+
+    private fun handleArithmeticAction(context: Context?, action: String?, remoteViews: RemoteViews, componentName: ComponentName) {
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        val appWidgetIds = appWidgetManager.getAppWidgetIds(componentName)
+        calculationHandler.addArithemetic(Arithemetics.valueOf(action!!))
+        updateViewsAfterArithmetic(context, remoteViews, componentName, appWidgetIds)
+    }
+
+    private fun handleNumberAction(context: Context?, action: String?, remoteViews: RemoteViews, componentName: ComponentName) {
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        val appWidgetIds = appWidgetManager.getAppWidgetIds(componentName)
+        calculationHandler.addValue(action!!)
+        updateViewsAfterNumber(context, remoteViews, componentName, appWidgetIds)
+    }
+
+    private fun updateViewsAfterConversion(context: Context?, remoteViews: RemoteViews, componentName: ComponentName, appWidgetIds: IntArray) {
+        var text = calculationHandler.getExpression().value
+            .replace("/", "÷")
+            .replace("*", "×")
+            .replace("#", "%")
+        text = if (text.length > 1 && text[1].toString() != ".") {
+            text.trimStart('0')
+        } else {
+            text
+        }
+        val text2 = calculationHandler.getAnswer().value
+        remoteViews.setTextViewText(R.id.input, text)
+        remoteViews.setTextViewText(R.id.output, text2)
+        val currencyRate = calculationHandler.getTotalCurrency().value
+        remoteViews.setTextViewText(R.id.conversion_rate_output_widget, currencyRate)
+        remoteViews.setViewVisibility(R.id.conversion_rate_output_widget, View.VISIBLE)
+        updateWidgets(context, componentName, appWidgetIds, remoteViews)
+    }
+
+    private fun updateViewsAfterClear(context: Context?, remoteViews: RemoteViews, componentName: ComponentName, appWidgetIds: IntArray) {
+        var text = calculationHandler.getExpression().value
+            .replace("/", "÷")
+            .replace("*", "×")
+            .replace("#", "%")
+        text = if (text.length > 1 && text[1].toString() != ".") {
+            text.trimStart('0')
+        } else {
+            text
+        }
+        val text2 = calculationHandler.getAnswer().value
+        remoteViews.setTextViewText(R.id.input, text)
+        remoteViews.setTextViewText(R.id.output, text2)
+        remoteViews.setViewVisibility(R.id.conversion_rate_output_widget, View.GONE)
+        updateWidgets(context, componentName, appWidgetIds, remoteViews)
+    }
+
+    private fun updateViewsAfterAnswer(context: Context?, remoteViews: RemoteViews, componentName: ComponentName, appWidgetIds: IntArray) {
+        var text = calculationHandler.getExpression().value
+            .replace("/", "÷")
+            .replace("*", "×")
+            .replace("#", "%")
+        text = if (text.length > 1 && text[1].toString() != ".") {
+            text.trimStart('0')
+        } else {
+            text
+        }
+        val text2 = calculationHandler.getAnswer().value
+        remoteViews.setTextViewText(R.id.input, text)
+        remoteViews.setTextViewText(R.id.output, text2)
+        remoteViews.setViewVisibility(R.id.conversion_rate_output_widget, View.GONE)
+        updateWidgets(context, componentName, appWidgetIds, remoteViews)
+    }
+
+    private fun updateViewsAfterSubmit(context: Context?, remoteViews: RemoteViews, componentName: ComponentName, appWidgetIds: IntArray) {
+        var text = calculationHandler.getExpression().value
+            .replace("/", "÷")
+            .replace("*", "×")
+            .replace("#", "%")
+        text = if (text.length > 1 && text[1].toString() != ".") {
+            text.trimStart('0')
+        } else {
+            text
+        }
+        val text2 = calculationHandler.getAnswer().value
+        val currencyRate = calculationHandler.getTotalCurrency().value
+        remoteViews.setTextViewText(R.id.conversion_rate_output_widget, currencyRate)
+        remoteViews.setViewVisibility(R.id.conversion_rate_output_widget, View.GONE)
+        remoteViews.setTextViewText(R.id.input, text.flatten())
+        remoteViews.setTextViewText(R.id.output, text2)
+        updateWidgets(context, componentName, appWidgetIds, remoteViews)
+    }
+
+    private fun updateViewsAfterArithmetic(context: Context?, remoteViews: RemoteViews, componentName: ComponentName, appWidgetIds: IntArray) {
+        var text = calculationHandler.getExpression().value
+            .replace("/", "÷")
+            .replace("*", "×")
+            .replace("#", "%")
+        text = if (text.length > 1 && text[1].toString() != ".") {
+            text.trimStart('0')
+        } else {
+            text
+        }
+        val text2 = calculationHandler.getAnswer().value
+        remoteViews.setTextViewText(R.id.input, text.flatten())
+        remoteViews.setTextViewText(R.id.output, text2)
+        updateWidgets(context, componentName, appWidgetIds, remoteViews)
+    }
+
+    private fun updateViewsAfterNumber(context: Context?, remoteViews: RemoteViews, componentName: ComponentName, appWidgetIds: IntArray) {
+        var text = calculationHandler.getExpression().value
+            .replace("/", "÷")
+            .replace("*", "×")
+            .replace("#", "%")
+        text = if (text.length > 1 && text[1].toString() != ".") {
+            text.trimStart('0')
+        } else {
+            text
+        }
+        val text2 = calculationHandler.getAnswer().value
+        remoteViews.setTextViewText(R.id.input, text.flatten())
+        remoteViews.setTextViewText(R.id.output, text2)
+        updateWidgets(context, componentName, appWidgetIds, remoteViews)
+    }
+
+    private fun updateWidgets(context: Context?, componentName: ComponentName, appWidgetIds: IntArray, remoteViews: RemoteViews) {
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        for (appWidgetId in appWidgetIds) {
+            appWidgetManager.updateAppWidget(componentName, remoteViews)
+        }
+    }
+
+    override fun onEnabled(context: Context?) {
+        super.onEnabled(context)
+        // Initialize resources if needed
+        coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    }
+
+    override fun onDisabled(context: Context?) {
+        super.onDisabled(context)
+        // Clean up resources if needed
+        coroutineScope.cancel() // Cancel all coroutines when the widget is disabled
     }
 }
