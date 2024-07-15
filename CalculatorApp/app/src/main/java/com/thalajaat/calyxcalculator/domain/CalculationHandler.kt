@@ -112,7 +112,7 @@ class CalculationHandler : CalculationHandlerInterface {
             Arithemetics.MODULUS -> {
                 expression.value += "%"
                 try {
-                    val e = Expression(convertPercentageExpressions(insertMultiplicationAfterPercentage(expression.value)))
+                    val e = Expression(convertPercentageExpressions(insertMultiplicationAfterPercentage(expression.value.flatten())))
                     val result = e.calculate()
                     if (result.isNaN()) {
 
