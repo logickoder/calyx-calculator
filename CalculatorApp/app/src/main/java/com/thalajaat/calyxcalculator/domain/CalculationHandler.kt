@@ -185,7 +185,7 @@ class CalculationHandler : CalculationHandlerInterface {
                 "+" -> "(${number2}%*${number1})+${number1}"
                 "-" -> "${number1}-(${number2}%*${number1})"
                 "*" -> "${number2}%*${number1}" // This case is already correct, but we include it for completeness
-                "/" -> "${number2}%/${number1}"
+                "/" -> "${number1}/${number2}%"
                 else -> matchResult.value // Should never happen, but included for completeness
             }
         }
