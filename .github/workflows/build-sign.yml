@@ -36,24 +36,26 @@ jobs:
         run: ./gradlew assembleRelease 
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          sdk-platform: '33'
+        uses: android-actions/setup-android@v2
 
-      - name: Install build tools
-        run: sdkmanager "build-tools;33.0.0"
+      - name: Install specific build tools
+        run: |
+          sdkmanager "build-tools;29.0.3"
+          echo "${ANDROID_HOME}/build-tools/29.0.3" >> $GITHUB_PATH
 
-      - uses: r0adkll/sign-android-release@v1
-        name: Sign app APK
-        # ID used to access action output
-        id: sign_app
+      - name: List build tools (for verification)
+        run: ls -l $ANDROID_HOME/build-tools
+
+      - name: Sign APK
+        uses: r0adkll/sign-android-release@v1.0.4
         with:
           releaseDirectory: ./CalculatorApp/app/build/outputs/apk/release
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
-
+        env:
+          BUILD_TOOLS_VERSION: "29.0.3"
       # Example use of `signedReleaseFile` output -- not needed
       - uses: actions/upload-artifact@v2
         with:
