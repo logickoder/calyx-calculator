@@ -28,13 +28,16 @@ jobs:
         run: chmod +x ./CalculatorApp/gradlew
 
       - name: Build with Gradle
-        run: ./CalculatorApp/gradlew build
+        working-directory: ./CalculatorApp/
+        run: ./gradlew build
 
       - name: Build debug APK
-        run: bash ./CalculatorApp/gradlew assembleDebug --stacktrace
+        working-directory: ./CalculatorApp/
+        run: bash ./gradlew assembleDebug --stacktrace
 
       - name: Check files
-        run: ls -al ./CalculatorApp/app/build/outputs/apk/debug
+        working-directory: ./CalculatorApp/
+        run: ls -al ./app/build/outputs/apk/debug
 
       - name: Create Release
         id: create_release
