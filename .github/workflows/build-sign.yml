@@ -1,0 +1,55 @@
+name: Android build signed CI
+
+on:
+  push:
+    branches:
+      - bugfix/widget_ui_and_dialog
+      - Development
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code from the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch the entire repository for better analysis
+
+      # Set up JDK 17
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./CalculatorApp/gradlew
+
+      - name: Build with Gradle
+        working-directory: ./CalculatorApp/
+        run: ./gradlew build
+        
+      - name: Build Release APK
+        working-directory: ./CalculatorApp/
+        run: ./gradlew assembleRelease 
+
+      - uses: MatiasG19/android-sign@v2
+        name: Sign app APK
+        with:
+          releaseDirectory: |
+            app/build/outputs/apk/release
+            app/build/outputs/bundle/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          output: build/release/signed
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "30.0.2"      
+      
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Signed app bundle
+          path: ${{steps.sign_app.outputs.signedReleaseFile}}
