@@ -23,11 +23,11 @@ jobs:
 
     - name: Build with Gradle
       working-directory: ./CalculatorApp/
-      run: ./gradlew build -x lint
+      run: ./gradlew build 
 
     - name: Build Release APK
       working-directory: ./CalculatorApp/
-      run: ./gradlew assembleRelease -x lint
+      run: ./gradlew assembleRelease 
 
     - name: Sign APK
       uses: r0adkll/sign-android-release@v1
