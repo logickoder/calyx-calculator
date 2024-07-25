@@ -8,5 +8,5 @@ data class ConversionEntity(
     @PrimaryKey
     var id: String,
     val rate:String,
-    val timestap:String
+    val timestamp:String
 )

@@ -6,7 +6,6 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
@@ -20,8 +19,6 @@ import com.thalajaat.calyxcalculator.data.datasources.local.room.DropDownRateEnt
 import com.thalajaat.calyxcalculator.domain.Arithemetics
 import com.thalajaat.calyxcalculator.domain.CalculationHandler
 import com.thalajaat.calyxcalculator.presentation.viewmodels.CalculatorViewModel
-import com.thalajaat.calyxcalculator.utils.DeleteAllLongClickListener
-import com.thalajaat.calyxcalculator.utils.Utils.CLEAR_ALL_CLICK_ACTION
 import com.thalajaat.calyxcalculator.utils.Utils.flatten
 import kotlinx.coroutines.*
 
@@ -58,7 +55,7 @@ class ExampleAppWidgetProvider : AppWidgetProvider() {
         var list = emptyList<DropDownRateEntity>()
         val calculationHandler = CalculationHandler()
         fun getVM(context: Context) = CalculatorViewModel(
-            ConversionDbRepo(ConversionDatabase.getDatabase(context).converstionDao()),
+            ConversionDbRepo(ConversionDatabase.getDatabase(context).conversionDao()),
             calculationHandler
         )
     }

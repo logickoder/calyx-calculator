@@ -17,7 +17,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.thalajaat.calyxcalculator.data.datasources.local.Coins
 import com.thalajaat.calyxcalculator.data.datasources.local.room.ConversionDatabase
 import com.thalajaat.calyxcalculator.data.datasources.local.room.ConversionDbRepo
 import com.thalajaat.calyxcalculator.data.datasources.local.room.DropDownRateEntity
@@ -44,7 +43,7 @@ class MainActivity : AppCompatActivity(), Convert {
 
     private val calculatorRepository by lazy {
         val repository = ConversionDbRepo(
-            ConversionDatabase.getDatabase(this).converstionDao()
+            ConversionDatabase.getDatabase(this).conversionDao()
         ) // Create a repository instance
         val factory = CalculorViewModelFactory(repository, CalculationHandler())
         factory
@@ -187,20 +186,27 @@ class MainActivity : AppCompatActivity(), Convert {
                     oldDialog = this
                     job?.cancel()
                     // Set an elevation value for the popup window
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        elevation = 10.0f
-                    }
+                    elevation = 10.0f
 
                     val recyclerview = popupView.ratesList
-                    val filter = popupView.search.doOnTextChanged { text, start, before, count ->
-
+                    popupView.search.doOnTextChanged { text, _, _, _ ->
+                        val query = text.toString().uppercase()
                         adapter.setItems(
                             calculatorViewModel.rateState.value.sortedBy { it.start }
                                 .filter {
-                                    it.end.contains(
-                                        text.toString().uppercase()
-                                    ) || it.start.contains(text.toString().uppercase())
-                                })
+                                    if (query.length <= 3) {
+                                        it.start.contains(query) || it.end.contains(query)
+                                    } else if (query.length < 6) {
+                                        val start = query.take(3)
+                                        val end = query.takeLast(query.length - 3)
+                                        it.start == start && it.end.startsWith(end)
+                                    } else {
+                                        val start = query.take(3)
+                                        val end = query.takeLast(3)
+                                        it.start == start && it.end == end
+                                    }
+                                }
+                        )
                     }
                     recyclerview.layoutManager =
                         LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
@@ -309,8 +315,8 @@ class MainActivity : AppCompatActivity(), Convert {
             item,
             {},
             onError = { },
-            conversionError = {error ->
-               Snackbar.make(binding.root, error, Snackbar.LENGTH_SHORT).show()
+            conversionError = { error ->
+                Snackbar.make(binding.root, error, Snackbar.LENGTH_SHORT).show()
             })
     }
 

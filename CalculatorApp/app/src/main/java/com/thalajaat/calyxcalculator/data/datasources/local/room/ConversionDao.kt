@@ -13,10 +13,10 @@ interface ConversionDao {
     suspend fun insertConversionRate(entity: ConversionEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertDropDownRates( entity: List<DropDownRateEntity>)
+    suspend fun insertDropDownRates(entity: List<DropDownRateEntity>)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertDropDownRates2( entity: List<DropDownRateEntity>)
+    suspend fun insertDropDownRates2(entity: List<DropDownRateEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDropDownRate(entity: DropDownRateEntity)
@@ -30,13 +30,14 @@ interface ConversionDao {
     @Query("SELECT * FROM conversiontable")
     fun getConversionRates(): Flow<List<ConversionEntity>>
 
-    @Query("SELECT * FROM dropdownratestable ORDER BY `index` ASC")
+    @Query("SELECT * FROM dropdownratestable ORDER BY id ASC")
     fun getDropDownRates(): Flow<List<DropDownRateEntity>>
-    @Query("SELECT * FROM dropdownratestable ORDER BY `index` ASC")
+
+    @Query("SELECT * FROM dropdownratestable ORDER BY id ASC")
     fun getDropDownRates2(): List<DropDownRateEntity>
 
     @Query("SELECT * FROM conversiontable WHERE id = :rateId")
-    fun getConversionRate(rateId:String): ConversionEntity?
+    fun getConversionRate(rateId: String): ConversionEntity?
 
     @Query("DELETE FROM conversiontable")
     suspend fun deleteAll()
