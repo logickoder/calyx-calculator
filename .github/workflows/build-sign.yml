@@ -35,8 +35,16 @@ jobs:
         working-directory: ./CalculatorApp/
         run: ./gradlew assembleRelease 
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          sdk-platform: '33'
+
+      - name: Install build tools
+        run: sdkmanager "build-tools;33.0.0"
+
       - name: Sign APK
-        uses: r0adkll/sign-android-release@v1
+        uses: r0adkll/sign-android-release@v1.0.4
         id: sign_app
         with:
           releaseDirectory: ./CalculatorApp/app/build/outputs/apk/release
@@ -44,6 +52,7 @@ jobs:
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
+          buildToolsVersion: '33.0.0'
 
       - name: Upload APK
         uses: actions/upload-artifact@v3
