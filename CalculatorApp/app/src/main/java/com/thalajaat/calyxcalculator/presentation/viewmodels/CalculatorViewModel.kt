@@ -147,7 +147,9 @@ fun String.isOlderThanOneHourLegacy(): Boolean {
         val oneHourAgo = Date(System.currentTimeMillis() - 3600 * 1000)
 
         // Returns true if the parsed timestamp is before the timestamp one hour ago
-        return parsedTimestamp.before(oneHourAgo)
+        if (parsedTimestamp != null) {
+            return parsedTimestamp.before(oneHourAgo)
+        }
 
     } catch (e: Exception) {
         e.printStackTrace()

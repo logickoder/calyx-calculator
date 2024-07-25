@@ -3,8 +3,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     id("kotlin-parcelize")
-    id("kotlin-kapt")
-    id("androidx.navigation.safeargs.kotlin")
+    alias(libs.plugins.ksp)
+    id("${libs.plugins.navigation.safeargs.get().pluginId}.kotlin")
 }
 
 android {
@@ -13,8 +13,8 @@ android {
 
     defaultConfig {
         applicationId = "com.thalajaat.calyxcalculator"
-        minSdk = 16
-        targetSdk = 33
+        minSdk = 21
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
         multiDexEnabled = true
@@ -57,7 +57,6 @@ dependencies {
     testImplementation(libs.junit)
 
     testImplementation(libs.kotlinx.coroutines.test)
-    androidTestImplementation(libs.jetbrains.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
@@ -75,9 +74,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.savedstate)
 
     implementation(libs.androidx.room.runtime)
-    kapt("androidx.room:room-compiler:2.5.1")
     implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.room.rxjava2)
+    ksp(libs.androidx.room.compiler)
 
     implementation(libs.kotlinx.coroutines.play.services)
 
@@ -86,7 +84,6 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.converter.scalars)
-    androidTestImplementation(libs.mockwebserver)
     testImplementation(libs.okhttp3.mockwebserver)
 
     implementation(libs.kotlinx.coroutines.core)

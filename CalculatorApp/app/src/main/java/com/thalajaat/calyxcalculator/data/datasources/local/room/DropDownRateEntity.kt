@@ -6,7 +6,7 @@ import com.google.gson.Gson
 
 @Entity(tableName = "DropDownRatesTable")
 data class DropDownRateEntity(
-    @PrimaryKey()
+    @PrimaryKey
     var id: String,
     val start:String,
     val index:Int,
